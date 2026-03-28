@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lewis · Structure Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{--bg:#090b0f;--card:rgba(15,20,30,0.88);--neon-cyan:#00f5ff;--neon-green:#39ff14;--neon-pink:#ff2d78;--neon-yellow:#ffe600;--text:#c8d8e8;--muted:#4a5f72;--border:rgba(0,245,255,0.15);--glow-cyan:0 0 8px #00f5ff,0 0 20px rgba(0,245,255,0.3);--glow-green:0 0 8px #39ff14,0 0 20px rgba(57,255,20,0.3)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:80vw;height:60vh;background:radial-gradient(ellipse,rgba(0,245,255,0.05) 0%,transparent 70%);pointer-events:none;z-index:0}
+header{position:relative;z-index:10;padding:20px 28px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.logo{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;letter-spacing:.1em;color:var(--neon-cyan);text-shadow:var(--glow-cyan)}
+.logo span{color:var(--neon-pink);text-shadow:0 0 8px #ff2d78,0 0 20px rgba(255,45,120,0.3)}
+.tagline{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-top:2px}
+
+/* ── Page shell: sidebar + main ── */
+.page-shell{display:flex;height:calc(100vh - 65px);overflow:visible;position:relative;z-index:10}
+
+/* ── Left sidebar ── */
+.sidebar{width:210px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;background:rgba(9,11,15,0.95);backdrop-filter:blur(8px)}
+.sidebar-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sidebar-label{font-family:'Orbitron',monospace;font-size:.55rem;letter-spacing:.2em;color:var(--neon-cyan);text-transform:uppercase;text-shadow:var(--glow-cyan)}
+.sidebar-list{flex:1;overflow-y:auto;padding:8px 0}
+.sidebar-list::-webkit-scrollbar{width:4px}
+.sidebar-list::-webkit-scrollbar-track{background:transparent}
+.sidebar-list::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:2px}
+.sidebar-list::-webkit-scrollbar-thumb:hover{background:rgba(0,245,255,0.4)}
+.cmpd-btn{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(0,245,255,0.06);color:var(--muted);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:.68rem;padding:11px 16px;text-align:left;transition:all .18s;line-height:1.5;display:block}
+.cmpd-btn:hover{background:rgba(0,245,255,.05);color:var(--neon-cyan);border-bottom-color:rgba(0,245,255,0.12)}
+.cmpd-btn.active{background:rgba(0,245,255,.08);color:var(--neon-cyan);border-left:3px solid var(--neon-cyan);padding-left:13px}
+.cmpd-btn .formula{font-size:.78rem;display:block;margin-bottom:2px;letter-spacing:.04em}
+.cmpd-btn .cname{font-size:.55rem;display:block;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);opacity:.8}
+.cmpd-btn.active .cname{color:rgba(0,245,255,.65)}
+
+/* ── Main content area ── */
+.main-content{flex:1;overflow-y:auto;padding:20px 20px 40px}
+.main-content::-webkit-scrollbar{width:4px}
+.main-content::-webkit-scrollbar-track{background:transparent}
+.main-content::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.15);border-radius:2px}
+.main-layout{display:grid;grid-template-columns:1fr 320px;gap:20px}
+.diagram-card{background:var(--card);border:1px solid var(--border);border-radius:12px;backdrop-filter:blur(12px);display:flex;flex-direction:column;position:relative;overflow:visible}
+.corner-tl,.corner-br{position:absolute;width:20px;height:20px;pointer-events:none;z-index:2}
+.corner-tl{top:12px;left:12px;border-top:2px solid var(--neon-cyan);border-left:2px solid var(--neon-cyan);opacity:.4}
+.corner-br{bottom:12px;right:12px;border-bottom:2px solid var(--neon-cyan);border-right:2px solid var(--neon-cyan);opacity:.4}
+.card-top{display:flex;align-items:center;justify-content:space-between;padding:14px 24px 0}
+.card-title{font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:.2em;color:var(--neon-cyan);text-transform:uppercase}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);transition:all .3s}
+.status-dot.on{background:var(--neon-green);box-shadow:var(--glow-green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.tabs{display:flex;border-bottom:1px solid var(--border);padding:0 24px}
+.tab{font-family:'Orbitron',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;padding:11px 16px;background:transparent;border:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.tab.on{color:var(--neon-cyan);border-bottom-color:var(--neon-cyan);text-shadow:var(--glow-cyan)}
+.tab:hover:not(.on){color:var(--text)}
+.view-body{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;min-height:380px}
+.placeholder{text-align:center;color:var(--muted)}
+.placeholder .ico{font-size:3rem;margin-bottom:16px;opacity:.3}
+.placeholder p{font-family:'Share Tech Mono',monospace;font-size:.75rem;letter-spacing:.1em;line-height:1.8}
+#three-wrap{width:100%;height:420px;position:relative;border-radius:8px;overflow:hidden;cursor:grab;display:none}
+#three-wrap:active{cursor:grabbing}
+#three-canvas{display:block;width:100%;height:100%}
+#atom-labels{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.alabel{position:absolute;font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;transform:translate(-50%,-50%);pointer-events:none;text-shadow:0 0 6px #000,0 0 10px #000}
+.hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);background:rgba(0,0,0,.55);padding:3px 10px;border-radius:20px;pointer-events:none;white-space:nowrap}
+#svg-wrap{width:100%;align-items:center;justify-content:center;display:none}
+#svg-wrap svg{max-width:66%;height:auto;filter:drop-shadow(0 0 6px rgba(0,245,255,.2))}
+.side-panel{display:flex;flex-direction:column;gap:16px}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:12px;backdrop-filter:blur(12px);overflow:hidden}
+.ic-head{padding:12px 20px;border-bottom:1px solid var(--border);font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase}
+.ic-head.c{color:var(--neon-cyan)}.ic-head.y{color:var(--neon-yellow);text-shadow:0 0 8px var(--neon-yellow)}
+.ic-body{padding:16px 20px}
+.prow{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.prow:last-child{border-bottom:none}
+.pk{color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:.72rem}
+.pv{color:var(--text);font-weight:600;text-align:right;max-width:58%;font-size:.88rem}
+.ftext{font-size:.88rem;line-height:1.65;color:var(--text)}
+.wait{color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:.72rem;text-align:center;padding:16px 0}
+@media(max-width:900px){.main-layout{grid-template-columns:1fr}.page-shell{flex-direction:column}.sidebar{width:100%;height:200px;border-right:none;border-bottom:1px solid var(--border)}.main-content{padding:12px}header{padding:14px 16px}}
+
+/* ── Request form ── */
+.request-section{position:relative;z-index:10;padding:28px 32px 40px;border-top:1px solid var(--border);background:rgba(9,11,15,0.6)}
+.request-inner{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.request-title{font-family:'Orbitron',monospace;font-size:.7rem;letter-spacing:.2em;color:var(--neon-cyan);text-transform:uppercase;text-shadow:var(--glow-cyan)}
+.request-subtitle{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.05em;line-height:1.6}
+.request-row{display:flex;gap:10px}
+.request-row{display:flex;gap:10px}
+.request-input{flex:1;background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.2);border-radius:8px;color:var(--neon-cyan);font-family:'Share Tech Mono',monospace;font-size:.85rem;padding:11px 16px;outline:none;transition:border-color .3s,box-shadow .3s;letter-spacing:.05em}
+.request-input::placeholder{color:var(--muted)}
+.request-input:focus{border-color:var(--neon-cyan);box-shadow:var(--glow-cyan),inset 0 0 16px rgba(0,245,255,.04)}
+.request-textarea{width:100%;background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.2);border-radius:8px;color:var(--text);font-family:'Share Tech Mono',monospace;font-size:.8rem;padding:11px 16px;outline:none;resize:vertical;min-height:80px;transition:border-color .3s,box-shadow .3s;letter-spacing:.04em;line-height:1.6}
+.request-textarea::placeholder{color:var(--muted)}
+.request-textarea:focus{border-color:var(--neon-cyan);box-shadow:var(--glow-cyan),inset 0 0 16px rgba(0,245,255,.04)}
+.request-btn{background:transparent;border:1px solid var(--neon-green);border-radius:8px;color:var(--neon-green);cursor:pointer;font-family:'Orbitron',monospace;font-size:.62rem;font-weight:700;letter-spacing:.15em;padding:11px 24px;text-transform:uppercase;transition:all .25s;position:relative;overflow:hidden;white-space:nowrap;flex-shrink:0}
+.request-btn::before{content:'';position:absolute;inset:0;background:var(--neon-green);opacity:0;transition:opacity .25s}
+.request-btn:hover{color:#000;box-shadow:var(--glow-green)}
+.request-btn:hover::before{opacity:1}
+.request-btn span{position:relative;z-index:1}
+.request-btn:disabled{opacity:.4;cursor:not-allowed}
+.request-success{display:none;font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--neon-green);text-shadow:var(--glow-green);letter-spacing:.08em;padding:12px 16px;border:1px solid rgba(57,255,20,.25);border-radius:8px;background:rgba(57,255,20,.05)}
+.request-error{display:none;font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--neon-pink);text-shadow:var(--glow-pink);letter-spacing:.08em;padding:12px 16px;border:1px solid rgba(255,45,120,.25);border-radius:8px;background:rgba(255,45,120,.05)}
+.char-count{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);text-align:right;margin-top:-8px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="logo">Lewis<span>·</span>Lab</div>
+    <div class="tagline">Molecular Structure Visualizer</div>
+  </div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:.60rem;color:var(--muted);letter-spacing:.12em;">3D · ELECTRON DOT · v5.2</div>
+</header>
+
+<div class="page-shell">
+
+  <!-- Left sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-label">⬡ Compounds</div>
+    </div>
+    <div class="sidebar-list" id="compoundGrid"></div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <div class="main-layout">
+
+      <div class="diagram-card">
+        <div class="corner-tl"></div>
+        <div class="corner-br"></div>
+        <div class="card-top">
+          <div class="card-title">Molecular Viewer</div>
+          <div class="status-dot" id="dot"></div>
+        </div>
+        <div class="tabs">
+          <button class="tab on" id="t3d" onclick="switchTab('3d')">⬡ 3D Model</button>
+          <button class="tab"    id="tlw" onclick="switchTab('lw')">· Lewis Structure</button>
+        </div>
+        <div class="view-body" id="vbody">
+          <div class="placeholder" id="ph">
+            <div class="ico">⬡</div>
+            <p>Select a compound from<br>the list on the left</p>
+          </div>
+          <div id="three-wrap">
+            <canvas id="three-canvas"></canvas>
+            <div id="atom-labels"></div>
+            <div class="hint">🖱 drag to rotate · scroll to zoom</div>
+          </div>
+          <div id="svg-wrap"></div>
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="info-card">
+          <div class="ic-head c">⬡ Basic Properties</div>
+          <div class="ic-body" id="props"><p class="wait">Select a compound…</p></div>
+        </div>
+        <div class="info-card">
+          <div class="ic-head y">★ Fun Facts</div>
+          <div class="ic-body" id="facts"><p class="wait">Select a compound…</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Request a compound -->
+<div class="request-section">
+  <div class="request-inner">
+    <div class="request-title">⬡ Request a Compound</div>
+    <div class="request-subtitle">Don't see the compound you're looking for? Submit a request and we'll add it to the library.</div>
+    <div class="request-row">
+      <input class="request-input" id="req-compound" placeholder="Compound name or formula (e.g. SO3, Acetone)…" maxlength="100"/>
+      <input class="request-input" id="req-name" placeholder="Your name (optional)" maxlength="60" style="max-width:180px"/>
+    </div>
+    <textarea class="request-textarea" id="req-reason" placeholder="Why are you interested in this compound? (optional)" maxlength="300"></textarea>
+    <div class="char-count"><span id="charCount">0</span>/300</div>
+    <div class="request-row" style="align-items:center;gap:14px">
+      <button class="request-btn" id="reqBtn" onclick="submitRequest()"><span>Submit Request</span></button>
+      <div class="request-success" id="req-success">✓ Request submitted — thank you!</div>
+      <div class="request-error" id="req-error">⚠ Please enter a compound name.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// lp(ax,ay,dx,dy): draw a lone pair (2 pink dots) from atom centre
+// dx,dy = outward direction (normalised internally), D=18px offset, S=5px gap
+function lp(ax, ay, dx, dy) {
+  var len=Math.sqrt(dx*dx+dy*dy)||1;
+  var nx=dx/len, ny=dy/len, qx=-ny, qy=nx, D=18, S=5;
+  var mx=ax+nx*D, my=ay+ny*D;
+  var x1=Math.round(mx+qx*S), y1=Math.round(my+qy*S);
+  var x2=Math.round(mx-qx*S), y2=Math.round(my-qy*S);
+  return '<circle cx="'+x1+'" cy="'+y1+'" r="3" fill="#ff2d78"/>'+
+         '<circle cx="'+x2+'" cy="'+y2+'" r="3" fill="#ff2d78"/>';
+}
+
+const COMPOUNDS = {
+
+// ════════════════════════════════════════════════════════════
+// H₂O  —  O at (250,210).  Bond to H-right (370,210), H-lowerleft (170,305)
+//   O has 2 lone pairs.
+//   LP1: above O → midpoint (250, 183)  ← 27px above centre, clear of "O" glyph (~14px radius)
+//   LP2: upper-right of O → midpoint (273, 183)  ← diagonal, 27px away, clear of both bonds
+//   Bonds go RIGHT and DOWN-LEFT so upper and upper-right quadrants are free.
+H2O:{
+  label:'H₂O', name:'Water',
+  info:{name:'Water',formula:'H₂O',molarMass:'18.015 g/mol',state:'Liquid',bondType:'Polar covalent',valenceElectrons:'8',
+    facts:['Water is the only natural substance found in all three states of matter at temperatures normally found on Earth\'s surface.',
+           'Its bent shape (104.5°) and polar O–H bonds create strong hydrogen bonding, giving water an unusually high boiling point for its tiny size.',
+           'Hot water can freeze faster than cold water under some conditions — a still-debated phenomenon called the Mpemba effect.']},
+  mol:{
+    atoms:[{element:'O',x:0,y:0,z:0},{element:'H',x:0.958,y:0,z:0},{element:'H',x:-0.239,y:0.927,z:0}],
+    bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1}],
+    lonePairs:[{atomIndex:0,direction:{x:0,y:-1,z:0}},{atomIndex:0,direction:{x:-1,y:0,z:0}}]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="250" y1="210" x2="360" y2="210" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="210" x2="170" y2="305" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(250,210,  0,-1)}
+  ${lp(250,210, -1, 0)}
+  <text x="250" y="210" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="26">O</text>
+  <text x="380" y="210" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="24">H</text>
+  <text x="152" y="320" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="24">H</text>
+  <text x="250" y="390" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">2 lone pairs on O  ·  bent geometry  ·  104.5°</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// CO₂  —  O-left(110,210)  C(250,210)  O-right(390,210)
+//   Each O: 2 lone pairs. Bonds go LEFT-RIGHT (horizontal), so up/down are free.
+//   O-left LP1: above → (110,183)    O-left LP2: below → (110,237)
+//   O-right LP1: above → (390,183)   O-right LP2: below → (390,237)
+//   No lone pairs on C.
+CO2:{
+  label:'CO₂', name:'Carbon Dioxide',
+  info:{name:'Carbon Dioxide',formula:'CO₂',molarMass:'44.010 g/mol',state:'Gas',bondType:'Polar covalent (nonpolar molecule)',valenceElectrons:'16',
+    facts:['Despite polar C=O bonds, CO₂ is nonpolar overall because its linear geometry makes the two dipoles cancel exactly.',
+           'CO₂ becomes a supercritical fluid above 31.1°C and 73 atm — used industrially to decaffeinate coffee and extract flavours.',
+           'Plants absorb roughly 2.6 billion tonnes of atmospheric CO₂ per year through photosynthesis, making them essential carbon sinks.']},
+  mol:{
+    atoms:[{element:'O',x:-1.16,y:0,z:0},{element:'C',x:0,y:0,z:0},{element:'O',x:1.16,y:0,z:0}],
+    bonds:[{from:1,to:0,order:2},{from:1,to:2,order:2}],
+    lonePairs:[
+      {atomIndex:0,direction:{x:-1,y:0,z:0}},{atomIndex:0,direction:{x:0,y:1,z:0}},{atomIndex:0,direction:{x:0,y:-1,z:0}},
+      {atomIndex:2,direction:{x:1,y:0,z:0}},{atomIndex:2,direction:{x:0,y:1,z:0}},{atomIndex:2,direction:{x:0,y:-1,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="118" y1="206" x2="238" y2="206" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="118" y1="214" x2="238" y2="214" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="262" y1="206" x2="382" y2="206" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="262" y1="214" x2="382" y2="214" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(110,210, -1, 0)}
+  ${lp(110,210,  0,-1)}
+  ${lp(110,210,  0, 1)}
+  ${lp(390,210,  1, 0)}
+  ${lp(390,210,  0,-1)}
+  ${lp(390,210,  0, 1)}
+  <text x="110" y="210" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="26">O</text>
+  <text x="250" y="210" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="26">C</text>
+  <text x="390" y="210" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="26">O</text>
+  <text x="250" y="390" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">2 lone pairs per O  ·  0 on C  ·  linear geometry  ·  180°</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// NH₃  —  N at (250,215). Bonds go down-left, down-right, straight down.
+//   N has 1 lone pair → place it above N: midpoint (250,188).
+//   Bonds all go downward so the space above N is completely free.
+NH3:{
+  label:'NH₃', name:'Ammonia',
+  info:{name:'Ammonia',formula:'NH₃',molarMass:'17.031 g/mol',state:'Gas',bondType:'Polar covalent',valenceElectrons:'8',
+    facts:['The lone pair on N gives NH₃ its trigonal pyramidal shape and makes it a strong Lewis base that readily donates electrons.',
+           'About 80% of all industrially produced ammonia feeds fertiliser production via the Haber–Bosch process, sustaining roughly half the world.',
+           'Over 180 million tonnes of ammonia are manufactured every year, making it one of the most-produced chemicals on Earth.']},
+  mol:{
+    atoms:[{element:'N',x:0,y:0,z:0},{element:'H',x:1.012,y:0,z:0},{element:'H',x:-0.337,y:0.957,z:0},{element:'H',x:-0.337,y:-0.479,z:0.829}],
+    bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1}],
+    lonePairs:[{atomIndex:0,direction:{x:-0.3,y:-0.5,z:-0.8}}]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="250" y1="215" x2="155" y2="315" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="215" x2="345" y2="315" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="215" x2="250" y2="330" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(250,215, 0,-1)}
+  <text x="250" y="215" text-anchor="middle" dominant-baseline="middle" fill="#4499ff" font-family="monospace" font-weight="bold" font-size="26">N</text>
+  <text x="138" y="332" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="24">H</text>
+  <text x="362" y="332" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="24">H</text>
+  <text x="250" y="350" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="24">H</text>
+  <text x="250" y="395" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">1 lone pair on N  ·  trigonal pyramidal  ·  107°</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// C₃H₇NO₂ (Alanine)
+// Skeletal layout (left→right):
+//   NH₂(80,210) — Cα(185,210) — C(290,210) with =O(365,155) and –OH(365,265)
+//   CH₃ branch up from Cα at (185,115)
+//
+// Atom positions:
+//   N  (80,210)   Cα (185,210)  H (235,210)  C (290,210)
+//   O= (365,155)  O– (365,265)
+//   CH₃ (185,115)  H-N at (48,175) and (48,245)
+//
+// Lone pairs — carefully avoiding all atoms & bonds:
+//   N (80,210): bonds go right, upper-right, lower-right → LP goes LEFT at (53,210)
+//   O= (365,155): bonds go lower-left (to C) → LP1 upper-right (392,128), LP2 right (392,155)
+//   O– (365,265): bonds go upper-left (to C) and right (to H) → LP1 below (365,292), LP2 upper-right (392,238)
+C3H7NO2:{
+  label:'C₃H₇NO₂', name:'Alanine',
+  info:{name:'L-Alanine',formula:'C₃H₇NO₂',molarMass:'89.094 g/mol',state:'Solid',bondType:'Polar covalent',valenceElectrons:'56',
+    facts:['Alanine is non-essential — your body synthesises it — and drives glucose metabolism via the alanine cycle between muscle and liver.',
+           'It is the second-most frequent amino acid in proteins after leucine, and especially abundant in silk fibroin.',
+           'Alanine exists as L and D mirror images; life uses L-alanine almost exclusively, while D-alanine appears in bacterial cell walls and some antibiotics.']},
+  mol:{
+    atoms:[
+      {element:'N',x:-1.80,y:0.60,z:0},{element:'H',x:-2.50,y:1.30,z:0},{element:'H',x:-2.50,y:-0.10,z:0},
+      {element:'C',x:-0.55,y:0.60,z:0},{element:'H',x:-0.25,y:1.50,z:0.50},
+      {element:'C',x:0.50,y:-0.45,z:0},{element:'O',x:1.70,y:-0.20,z:0},{element:'O',x:0.10,y:-1.65,z:0},
+      {element:'H',x:2.10,y:-1.10,z:0},
+      {element:'C',x:-0.35,y:1.80,z:-1.00},{element:'H',x:0.65,y:2.20,z:-1.00},{element:'H',x:-0.95,y:2.60,z:-0.80},{element:'H',x:-0.60,y:1.40,z:-2.00}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1},
+      {from:3,to:4,order:1},{from:3,to:5,order:1},{from:3,to:9,order:1},
+      {from:5,to:6,order:1},{from:5,to:7,order:2},{from:6,to:8,order:1},
+      {from:9,to:10,order:1},{from:9,to:11,order:1},{from:9,to:12,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:0,direction:{x:-0.5,y:0.8,z:0.3}},
+      {atomIndex:7,direction:{x:-0.7,y:-0.7,z:0}},{atomIndex:7,direction:{x:0.7,y:-0.7,z:0}},
+      {atomIndex:6,direction:{x:0.7,y:0.7,z:0}},{atomIndex:6,direction:{x:1.0,y:-0.1,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="80"  y1="210" x2="160" y2="210" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="160" y1="210" x2="240" y2="210" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="240" y1="210" x2="295" y2="210" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="295" y1="207" x2="368" y2="158" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="295" y1="213" x2="368" y2="162" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="295" y1="210" x2="368" y2="262" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="391" y1="268" x2="405" y2="268" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="160" y1="210" x2="160" y2="132" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="80"  y1="210" x2="48"  y2="175" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="80"  y1="210" x2="48"  y2="245" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp( 80,210, -1,  0)}
+  ${lp(382,152,  0, -1)}
+  ${lp(382,152,  1,  0)}
+  ${lp(382,268,  0, -1)}
+  ${lp(382,268,  0,  1)}
+  <text x="80"  y="210" text-anchor="middle" dominant-baseline="middle" fill="#4499ff" font-family="monospace" font-weight="bold" font-size="22">N</text>
+  <text x="33"  y="170" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="19">H</text>
+  <text x="33"  y="250" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="19">H</text>
+  <text x="160" y="210" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="22">C</text>
+  <text x="160" y="118" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="18">CH₃</text>
+  <text x="240" y="210" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">H</text>
+  <text x="295" y="210" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="22">C</text>
+  <text x="382" y="152" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="382" y="268" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="413" y="268" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="19">H</text>
+  <text x="250" y="395" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">1 LP on N  ·  2 LP on each O  ·  amino acid backbone</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// BrF₃  — T-shaped. Br(250,230). F-left(100,230), F-right(400,230), F-top(250,95)
+//   Br: 2 lone pairs below  → (250,262) and (250,285)
+//       These are 32px and 55px below Br centre (230), well below the glyph.
+//       Stacked vertically so they don't overlap each other.
+//
+//   F-left (100,230): bonds go RIGHT only
+//     LP1 left-above: (68,203)   LP2 left-below: (68,257)   LP3 far-left: (73,230)
+//     All three clear of "F" glyph and each other (min 26px apart).
+//
+//   F-right (400,230): bonds go LEFT only
+//     LP1 right-above: (432,203)  LP2 right-below: (432,257)  LP3 far-right: (427,230)
+//
+//   F-top (250,95): bonds go DOWN only
+//     LP1 left: (218,68)   LP2 right: (282,68)   LP3 above: (250,65)
+//     LP3 above is 30px above glyph centre, clear. LP1/LP2 are 32px left/right.
+BrF3:{
+  label:'BrF₃', name:'Bromine Trifluoride',
+  info:{name:'Bromine Trifluoride',formula:'BrF₃',molarMass:'136.899 g/mol',state:'Liquid',bondType:'Polar covalent',valenceElectrons:'28',
+    facts:['BrF₃ is T-shaped because its 2 lone pairs occupy equatorial positions in the underlying trigonal bipyramidal electron geometry, deflecting the F atoms into a T.',
+           'It reacts explosively with water and most organic compounds — it can even ignite asbestos and glass wool.',
+           'Despite its extreme reactivity, BrF₃ is industrially used to convert uranium oxides to UF₆ gas for nuclear fuel enrichment.']},
+  mol:{
+    atoms:[{element:'Br',x:0,y:0,z:0},{element:'F',x:1.81,y:0,z:0},{element:'F',x:-1.81,y:0,z:0},{element:'F',x:0,y:1.72,z:0}],
+    bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1}],
+    lonePairs:[
+      {atomIndex:0,direction:{x:0,y:-1,z:0.5}},{atomIndex:0,direction:{x:0,y:-1,z:-0.5}},
+      {atomIndex:1,direction:{x:1,y:0,z:0}},{atomIndex:1,direction:{x:0,y:1,z:0}},{atomIndex:1,direction:{x:0,y:-1,z:0}},
+      {atomIndex:2,direction:{x:-1,y:0,z:0}},{atomIndex:2,direction:{x:0,y:1,z:0}},{atomIndex:2,direction:{x:0,y:-1,z:0}},
+      {atomIndex:3,direction:{x:0,y:1,z:0}},{atomIndex:3,direction:{x:1,y:0,z:0}},{atomIndex:3,direction:{x:-1,y:0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="108" y1="230" x2="232" y2="230" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="268" y1="230" x2="392" y2="230" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="218" x2="250" y2="107" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(250,230, -0.5, 1)}
+  ${lp(250,230,  0.5, 1)}
+  ${lp(100,230, -1,  0)}
+  ${lp(100,230,  0, -1)}
+  ${lp(100,230,  0,  1)}
+  ${lp(400,230,  1,  0)}
+  ${lp(400,230,  0, -1)}
+  ${lp(400,230,  0,  1)}
+  ${lp(250, 95,  0, -1)}
+  ${lp(250, 95, -1,  0)}
+  ${lp(250, 95,  1,  0)}
+  <text x="250" y="230" text-anchor="middle" dominant-baseline="middle" fill="#cc6622" font-family="monospace" font-weight="bold" font-size="24">Br</text>
+  <text x="100" y="230" text-anchor="middle" dominant-baseline="middle" fill="#44ff88" font-family="monospace" font-weight="bold" font-size="24">F</text>
+  <text x="400" y="230" text-anchor="middle" dominant-baseline="middle" fill="#44ff88" font-family="monospace" font-weight="bold" font-size="24">F</text>
+  <text x="250" y="95"  text-anchor="middle" dominant-baseline="middle" fill="#44ff88" font-family="monospace" font-weight="bold" font-size="24">F</text>
+  <text x="250" y="395" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">2 LP on Br  ·  3 LP per F  ·  T-shaped geometry</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// C₆H₁₂O₆  — Haworth projection. All O shown as "OH" labels so individual LP dots
+// would clutter the ring diagram. Instead we annotate with a note and show the
+// 3D model with full lone pairs on all oxygens.
+C6H12O6:{
+  label:'C₆H₁₂O₆', name:'Glucose',
+  info:{name:'D-Glucose (β form)',formula:'C₆H₁₂O₆',molarMass:'180.156 g/mol',state:'Solid',bondType:'Polar covalent',valenceElectrons:'96',
+    facts:['Glucose is the primary fuel of all life — every cell uses it directly, and your brain alone burns through about 120 g per day.',
+           'The difference between starch and cellulose is one bond angle: α-linkages give digestible starch, β-linkages give structural cellulose.',
+           'Despite sharing C₆H₁₂O₆ with fructose and galactose, glucose has a completely different structure, taste, and metabolic pathway.']},
+  mol:{
+    atoms:[
+      {element:'O', x:0.00,y:0.29,z:-0.28},{element:'C', x:1.26,y:0.87,z:-0.02},
+      {element:'C', x:2.32,y:0.00,z:0.66},{element:'C', x:3.72,y:0.62,z:0.54},
+      {element:'C', x:3.72,y:1.76,z:-0.43},{element:'C', x:2.35,y:2.39,z:-0.56},
+      {element:'O', x:1.26,y:1.89,z:1.00},{element:'O', x:2.22,y:-1.17,z:-0.14},
+      {element:'O', x:4.72,y:-0.27,z:0.10},{element:'O', x:5.00,y:2.40,z:-0.08},
+      {element:'C', x:2.20,y:3.45,z:-1.63},{element:'O', x:3.37,y:4.26,z:-1.58},
+      {element:'H', x:1.35,y:0.97,z:-1.09},{element:'H', x:2.21,y:-0.31,z:1.71},
+      {element:'H', x:4.02,y:1.04,z:1.54},{element:'H', x:3.97,y:1.38,z:-1.44},
+      {element:'H', x:2.13,y:2.93,z:0.39},{element:'H', x:0.45,y:1.43,z:1.21},
+      {element:'H', x:1.39,y:-1.60,z:-0.02},{element:'H', x:4.64,y:-1.18,z:0.39},
+      {element:'H', x:5.79,y:1.87,z:0.10},{element:'H', x:1.25,y:4.00,z:-1.54},
+      {element:'H', x:2.27,y:2.96,z:-2.62},{element:'H', x:3.28,y:4.93,z:-2.30}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:0,to:5,order:1},
+      {from:1,to:2,order:1},{from:1,to:6,order:1},{from:1,to:12,order:1},
+      {from:2,to:3,order:1},{from:2,to:7,order:1},{from:2,to:13,order:1},
+      {from:3,to:4,order:1},{from:3,to:8,order:1},{from:3,to:14,order:1},
+      {from:4,to:5,order:1},{from:4,to:9,order:1},{from:4,to:15,order:1},
+      {from:5,to:10,order:1},{from:5,to:16,order:1},
+      {from:6,to:17,order:1},{from:7,to:18,order:1},{from:8,to:19,order:1},
+      {from:9,to:20,order:1},{from:10,to:11,order:1},{from:10,to:21,order:1},{from:10,to:22,order:1},
+      {from:11,to:23,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:0,direction:{x:-1,y:0,z:0}},{atomIndex:0,direction:{x:0,y:-1,z:0}},
+      {atomIndex:6,direction:{x:0,y:1,z:0}},{atomIndex:6,direction:{x:-1,y:0,z:0}},
+      {atomIndex:7,direction:{x:0,y:-1,z:0}},{atomIndex:7,direction:{x:-1,y:0,z:0}},
+      {atomIndex:8,direction:{x:1,y:0,z:0}},{atomIndex:8,direction:{x:0,y:-1,z:0}},
+      {atomIndex:9,direction:{x:1,y:0,z:0}},{atomIndex:9,direction:{x:0,y:1,z:0}},
+      {atomIndex:11,direction:{x:0,y:1,z:0}},{atomIndex:11,direction:{x:1,y:0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 520 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="162" y1="175" x2="358" y2="175" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="358" y1="175" x2="415" y2="228" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="415" y1="228" x2="358" y2="278" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="162" y1="278" x2="358" y2="278" stroke="#c8d8e8" stroke-width="8"/>
+  <line x1="105" y1="228" x2="162" y2="278" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="105" y1="228" x2="162" y2="175" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="105" y1="228" x2="62"  y2="188" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="260" y1="175" x2="260" y2="125" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="358" y1="175" x2="358" y2="125" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="415" y1="228" x2="460" y2="228" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="358" y1="278" x2="358" y2="322" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="260" y1="278" x2="260" y2="322" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="162" y1="278" x2="162" y2="322" stroke="#c8d8e8" stroke-width="2.5"/>
+  <text x="260" y="175" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="18">O</text>
+  <text x="358" y="175" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="16">C1</text>
+  <text x="415" y="228" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="16">C2</text>
+  <text x="358" y="278" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="16">C3</text>
+  <text x="260" y="278" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="16">C4</text>
+  <text x="162" y="278" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="16">C5</text>
+  <text x="50"  y="183" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">CH₂OH</text>
+  <text x="260" y="112" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">OH</text>
+  <text x="358" y="112" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">OH</text>
+  <text x="472" y="228" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">OH</text>
+  <text x="358" y="338" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">OH</text>
+  <text x="260" y="338" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">OH</text>
+  <text x="162" y="338" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">OH</text>
+  <text x="260" y="378" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="11">Haworth projection · thick bond = below ring · each O has 2 lone pairs (see 3D)</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// (C₂H₄)ₙ — Ethylene monomer. C at (205,210) and (295,210).
+//   No lone pairs on C or H — confirmed zero dots needed.
+//   SVG shows C=C double bond, 4 H atoms, and a clear label.
+C2H4:{
+  label:'(C₂H₄)ₙ', name:'Polyethylene',
+  info:{name:'Ethylene / Polyethylene',formula:'(C₂H₄)ₙ',molarMass:'28.054 g/mol (monomer)',state:'Gas (monomer) / Solid (polymer)',bondType:'Nonpolar covalent',valenceElectrons:'12 per monomer',
+    facts:['Polyethylene is the world\'s most-produced plastic — over 100 million tonnes per year — from grocery bags to bulletproof vests.',
+           'The C=C double bond in ethylene breaks during polymerisation, allowing monomers to link into chains thousands of units long.',
+           'HDPE and LDPE share the same monomer but differ in chain branching, making HDPE rigid and dense, LDPE flexible and light.']},
+  mol:{
+    atoms:[
+      {element:'C',x:0,y:0,z:0},{element:'C',x:1.34,y:0,z:0},
+      {element:'H',x:-0.54,y:0.93,z:0},{element:'H',x:-0.54,y:-0.93,z:0},
+      {element:'H',x:1.88,y:0.93,z:0},{element:'H',x:1.88,y:-0.93,z:0}
+    ],
+    bonds:[{from:0,to:1,order:2},{from:0,to:2,order:1},{from:0,to:3,order:1},{from:1,to:4,order:1},{from:1,to:5,order:1}],
+    lonePairs:[]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="203" y1="206" x2="297" y2="206" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="203" y1="214" x2="297" y2="214" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="205" y1="210" x2="135" y2="140" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="205" y1="210" x2="135" y2="280" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="295" y1="210" x2="365" y2="140" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="295" y1="210" x2="365" y2="280" stroke="#c8d8e8" stroke-width="2.5"/>
+  <text x="205" y="210" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="26">C</text>
+  <text x="295" y="210" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="26">C</text>
+  <text x="118" y="132" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="24">H</text>
+  <text x="118" y="288" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="24">H</text>
+  <text x="382" y="132" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="24">H</text>
+  <text x="382" y="288" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="24">H</text>
+  <text x="250" y="358" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">no lone pairs on C or H  ·  trigonal planar  ·  C=C 120°</text>
+  <text x="250" y="377" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="11">(repeating monomer unit of polyethylene)</text>
+</svg>`
+}
+
+
+,
+
+// ════════════════════════════════════════════════════════════
+// C3H9ISi — Iodotrimethylsilane
+// Si centre tetrahedral: I up top, 3 CH3 groups below
+// Si has no lone pairs. I has 3 lone pairs. C and H no lone pairs.
+C3H9ISi:{
+  label:'C₃H₉ISi', name:'Iodotrimethylsilane',
+  info:{name:'Iodotrimethylsilane',formula:'C₃H₉ISi',molarMass:'200.084 g/mol',state:'Liquid',bondType:'Polar covalent',valenceElectrons:'40',
+    facts:['Iodotrimethylsilane (TMSI) is a powerful reagent in organic chemistry that cleaves ethers, esters, and acetals under mild conditions.',
+           'The Si–I bond is unusually reactive because silicon strongly prefers to bond to electronegative atoms like oxygen, making TMSI a potent silyl transfer agent.',
+           'It is commonly generated in situ from chlorotrimethylsilane and sodium iodide rather than stored, due to its sensitivity to moisture and air.']},
+  mol:{
+    atoms:[
+      {element:'Si',x:0,    y:0,     z:0},
+      {element:'I', x:0,    y:0,     z:2.44},
+      {element:'C', x:1.763,y:0,     z:-0.623},
+      {element:'C', x:-0.882,y:1.527,z:-0.623},
+      {element:'C', x:-0.882,y:-1.527,z:-0.623},
+      {element:'H', x:2.562,y:0,     z:0.12},
+      {element:'H', x:1.87, y:0.899, z:-1.22},
+      {element:'H', x:1.87, y:-0.899,z:-1.22},
+      {element:'H', x:-0.38,y:2.362, z:0.12},
+      {element:'H', x:-1.50,y:1.922, z:-1.22},
+      {element:'H', x:0.12, y:2.362, z:-1.22},
+      {element:'H', x:-0.38,y:-2.362,z:0.12},
+      {element:'H', x:0.12, y:-2.362,z:-1.22},
+      {element:'H', x:-1.50,y:-1.922,z:-1.22}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1},{from:0,to:4,order:1},
+      {from:2,to:5,order:1},{from:2,to:6,order:1},{from:2,to:7,order:1},
+      {from:3,to:8,order:1},{from:3,to:9,order:1},{from:3,to:10,order:1},
+      {from:4,to:11,order:1},{from:4,to:12,order:1},{from:4,to:13,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:1,direction:{x:0,y:0,z:1}},
+      {atomIndex:1,direction:{x:1,y:0,z:0}},
+      {atomIndex:1,direction:{x:0,y:1,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="250" y1="220" x2="250" y2="120" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="220" x2="355" y2="295" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="220" x2="145" y2="295" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="220" x2="250" y2="320" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(250,105, 0,-1)}
+  ${lp(250,105, -1,0)}
+  ${lp(250,105,  1,0)}
+  <text x="250" y="220" text-anchor="middle" dominant-baseline="middle" fill="#ffcc66" font-family="monospace" font-weight="bold" font-size="24">Si</text>
+  <text x="250" y="103" text-anchor="middle" dominant-baseline="middle" fill="#993399" font-family="monospace" font-weight="bold" font-size="24">I</text>
+  <text x="373" y="307" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">CH₃</text>
+  <text x="127" y="307" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">CH₃</text>
+  <text x="250" y="337" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">CH₃</text>
+  <text x="250" y="395" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">3 LP on I  ·  0 LP on Si or C  ·  tetrahedral Si</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// Na2CrO4 — Sodium Chromate
+// Ionic: CrO4^2- tetrahedral anion + 2 Na+ cations
+// Cr: 0 LP (all bonding). Each O: 3 LP (like BrF3 F atoms — 1 bond, 6 non-bonding e).
+// Na: ionic, no covalent bonds shown.
+Na2CrO4:{
+  label:'Na₂CrO₄', name:'Sodium Chromate',
+  info:{name:'Sodium Chromate',formula:'Na₂CrO₄',molarMass:'161.97 g/mol',state:'Solid',bondType:'Ionic / Polar covalent',valenceElectrons:'50',
+    facts:['Sodium chromate is intensely yellow due to charge-transfer transitions in the chromate ion, where electrons jump from O to Cr under light absorption.',
+           'It is highly toxic and a known human carcinogen — hexavalent chromium (Cr⁶⁺) damages DNA and causes lung cancer with prolonged exposure.',
+           'Despite its toxicity, sodium chromate is used industrially as a corrosion inhibitor, in leather tanning, and as a precursor to other chromium compounds.']},
+  mol:{
+    atoms:[
+      {element:'Cr',x:0,     y:0,     z:0},
+      {element:'O', x:1.565, y:0,     z:0.553},
+      {element:'O', x:-0.783,y:1.355, z:0.553},
+      {element:'O', x:-0.783,y:-1.355,z:0.553},
+      {element:'O', x:0,     y:0,     z:-1.66},
+      {element:'Na',x:3.365, y:0,     z:1.753},
+      {element:'Na',x:-1.583,y:3.155, z:1.753}
+    ],
+    bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1},{from:0,to:4,order:1},{from:5,to:1,order:0},{from:5,to:2,order:0},{from:6,to:2,order:0},{from:6,to:3,order:0}],
+    lonePairs:[
+      {atomIndex:1,direction:{x:1,y:0,z:0}},{atomIndex:1,direction:{x:0,y:1,z:0}},{atomIndex:1,direction:{x:0,y:-1,z:0}},
+      {atomIndex:2,direction:{x:0,y:1,z:0}},{atomIndex:2,direction:{x:-1,y:0,z:0}},{atomIndex:2,direction:{x:0,y:0,z:1}},
+      {atomIndex:3,direction:{x:0,y:-1,z:0}},{atomIndex:3,direction:{x:-1,y:0,z:0}},{atomIndex:3,direction:{x:0,y:0,z:1}},
+      {atomIndex:4,direction:{x:0,y:0,z:-1}},{atomIndex:4,direction:{x:1,y:0,z:0}},{atomIndex:4,direction:{x:-1,y:0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="250" y1="215" x2="250" y2="130" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="215" x2="345" y2="285" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="215" x2="155" y2="285" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="215" x2="250" y2="310" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(250,215, 0,-1)}
+  ${lp(250,215, 1,-1)}
+  ${lp(250,215,-1,-1)}
+  ${lp(250,215,-1, 1)}
+  ${lp(250,215, 1, 1)}
+  ${lp(250,215, 0, 1)}
+  <text x="250" y="215" text-anchor="middle" dominant-baseline="middle" fill="#aacc00" font-family="monospace" font-weight="bold" font-size="22">Cr</text>
+  <text x="250" y="115" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="362" y="298" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="138" y="298" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="250" y="327" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="110" y="150" text-anchor="middle" dominant-baseline="middle" fill="#aa44ff" font-family="monospace" font-weight="bold" font-size="20">Na⁺</text>
+  <text x="390" y="150" text-anchor="middle" dominant-baseline="middle" fill="#aa44ff" font-family="monospace" font-weight="bold" font-size="20">Na⁺</text>
+  <text x="145" y="182" stroke="#4a5f72" stroke-width="1" stroke-dasharray="4,3" fill="none" font-family="monospace" font-size="11"/>
+  <line x1="122" y1="162" x2="165" y2="200" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="378" y1="162" x2="335" y2="200" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <text x="250" y="390" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">ionic ·  CrO₄²⁻ tetrahedral  ·  3 LP per O  ·  0 LP on Cr</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// C11H16O2 — Dihydroactinidiolide
+// Bicyclic lactone (6+5 fused ring). Simplified structural SVG.
+// O of lactone C=O: 2 LP. O in ring (ether-type): 2 LP.
+C11H16O2:{
+  label:'C₁₁H₁₆O₂', name:'Dihydroactinidiolide',
+  info:{name:'Dihydroactinidiolide',formula:'C₁₁H₁₆O₂',molarMass:'180.224 g/mol',state:'Solid',bondType:'Polar covalent',valenceElectrons:'68',
+    facts:['Dihydroactinidiolide is a naturally occurring bicyclic lactone found in tea, tobacco, and some insect secretions, contributing to characteristic aromas.',
+           'It belongs to the iridoid family of natural products and forms through oxidative degradation of carotenoids such as beta-carotene in plants.',
+           'The compound has attracted research interest for its role in insect chemical ecology — it acts as a pheromone component in several ant and termite species.']},
+  mol:{
+    atoms:[
+      {element:'C', x:0.00, y:0.00, z:0.00},
+      {element:'C', x:1.52, y:0.00, z:0.00},
+      {element:'C', x:2.28, y:1.28, z:0.00},
+      {element:'C', x:1.52, y:2.42, z:0.00},
+      {element:'C', x:0.00, y:2.30, z:0.00},
+      {element:'C', x:-0.60,y:1.15, z:0.00},
+      {element:'O', x:3.70, y:1.28, z:0.00},
+      {element:'C', x:4.30, y:0.08, z:0.00},
+      {element:'C', x:3.50, y:-1.08,z:0.00},
+      {element:'C', x:2.10, y:-1.10,z:0.00},
+      {element:'O', x:4.35, y:1.28, z:0.90},
+      {element:'C', x:-0.70,y:3.45, z:0.00},
+      {element:'C', x:2.10, y:3.70, z:0.00},
+      {element:'C', x:-1.45,y:0.00, z:0.50},
+      {element:'H', x:0.00, y:-0.60,z:0.90},
+      {element:'H', x:0.00, y:-0.60,z:-0.90},
+      {element:'H', x:4.30, y:-1.90,z:0.00},
+      {element:'H', x:3.50, y:-1.65,z:0.90},
+      {element:'H', x:3.50, y:-1.65,z:-0.90},
+      {element:'H', x:1.90, y:-1.65,z:0.90},
+      {element:'H', x:1.90, y:-1.65,z:-0.90},
+      {element:'H', x:-0.40,y:4.30, z:0.00},
+      {element:'H', x:-1.35,y:3.45, z:0.88},
+      {element:'H', x:-1.35,y:3.45, z:-0.88},
+      {element:'H', x:2.70, y:3.70, z:0.88},
+      {element:'H', x:2.70, y:3.70, z:-0.88},
+      {element:'H', x:1.45, y:4.57, z:0.00},
+      {element:'H', x:-1.45,y:0.60, z:1.40},
+      {element:'H', x:-2.08,y:0.60, z:-0.15},
+      {element:'H', x:-1.45,y:-0.95,z:0.80}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:1,to:2,order:1},{from:2,to:3,order:1},{from:3,to:4,order:1},
+      {from:4,to:5,order:1},{from:5,to:0,order:1},
+      {from:2,to:6,order:1},{from:6,to:7,order:1},{from:7,to:8,order:1},{from:8,to:9,order:1},
+      {from:9,to:1,order:1},
+      {from:7,to:10,order:2},
+      {from:4,to:11,order:1},{from:3,to:12,order:1},{from:5,to:13,order:1},
+      {from:0,to:14,order:1},{from:0,to:15,order:1},
+      {from:8,to:16,order:1},{from:8,to:17,order:1},{from:8,to:18,order:1},
+      {from:9,to:19,order:1},{from:9,to:20,order:1},
+      {from:11,to:21,order:1},{from:11,to:22,order:1},{from:11,to:23,order:1},
+      {from:12,to:24,order:1},{from:12,to:25,order:1},{from:12,to:26,order:1},
+      {from:13,to:27,order:1},{from:13,to:28,order:1},{from:13,to:29,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:6, direction:{x:0,y:0,z:1}},{atomIndex:6, direction:{x:0,y:0,z:-1}},
+      {atomIndex:10,direction:{x:0,y:1,z:0}},{atomIndex:10,direction:{x:1,y:0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 520 420" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="200,210 240,155 310,155 350,210 310,265 240,265" fill="none" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="310" y1="155" x2="370" y2="120" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="370" y1="120" x2="420" y2="155" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="420" y1="155" x2="420" y2="225" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="420" y1="225" x2="370" y2="265" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="310" y1="265" x2="370" y2="265" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="420" y1="153" x2="456" y2="130" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="420" y1="157" x2="456" y2="134" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="210" x2="155" y2="210" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="240" y1="265" x2="210" y2="315" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="310" y1="155" x2="310" y2="108" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(466,122, 0,-1)}
+  ${lp(466,122, 1, 0)}
+  ${lp(370,265, 0, 1)}
+  ${lp(370,265,-1, 0)}
+  <text x="275" y="135" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="370" y="120" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="420" y="155" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="420" y="225" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="370" y="265" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="466" y="122" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="138" y="210" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="14">CH₃</text>
+  <text x="200" y="325" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="14">CH₃</text>
+  <text x="310" y="94" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="14">CH₃</text>
+  <text x="260" y="395" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="11">bicyclic lactone  ·  2 LP on ether O  ·  2 LP on carbonyl O</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// C2H3ClO2 — Chloroacetic Acid (ClCH2COOH)
+// Structure: Cl-C-C(=O)-OH
+// N LP: Cl has 3 LP. O= has 2 LP. O-H has 2 LP.
+C2H3ClO2:{
+  label:'C₂H₃ClO₂', name:'Chloroacetic Acid',
+  info:{name:'Chloroacetic Acid',formula:'C₂H₃ClO₂',molarMass:'94.497 g/mol',state:'Solid',bondType:'Polar covalent',valenceElectrons:'42',
+    facts:['Chloroacetic acid is about 100× stronger than acetic acid because the electronegative chlorine atom withdraws electron density through the molecule, stabilising the carboxylate anion.',
+           'It is an important industrial intermediate used to manufacture herbicides like 2,4-D and 2,4,5-T, carboxymethylcellulose, and glycine.',
+           'Despite being a solid at room temperature, it is highly corrosive and toxic, causing severe skin burns and systemic poisoning through skin absorption.']},
+  mol:{
+    atoms:[
+      {element:'C', x:0,    y:0,    z:0},
+      {element:'C', x:1.52, y:0,    z:0},
+      {element:'Cl',x:-1.445,y:1.022,z:0},
+      {element:'H', x:-0.36,y:-1.02, z:0.89},
+      {element:'H', x:-0.36,y:-1.02, z:-0.89},
+      {element:'O', x:2.13, y:1.057, z:0},
+      {element:'O', x:2.20, y:-1.178,z:0},
+      {element:'H', x:3.04, y:-1.663,z:0}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1},{from:0,to:4,order:1},
+      {from:1,to:5,order:2},{from:1,to:6,order:1},{from:6,to:7,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:2,direction:{x:-1,y:0,z:0}},{atomIndex:2,direction:{x:0,y:1,z:0}},{atomIndex:2,direction:{x:0,y:-1,z:0}},
+      {atomIndex:5,direction:{x:0,y:1,z:0}},{atomIndex:5,direction:{x:1,y:0,z:0}},
+      {atomIndex:6,direction:{x:0,y:-1,z:0}},{atomIndex:6,direction:{x:1,y:0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="160" y1="215" x2="255" y2="215" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="255" y1="215" x2="340" y2="215" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="160" y1="215" x2="100" y2="165" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="160" y1="215" x2="138" y2="285" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="160" y1="215" x2="182" y2="285" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="340" y1="213" x2="400" y2="168" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="340" y1="217" x2="400" y2="172" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="340" y1="215" x2="400" y2="262" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="400" y1="262" x2="435" y2="287" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp( 82,152, -1,-1)}
+  ${lp( 82,152, -1, 0)}
+  ${lp( 82,152, -1, 1)}
+  ${lp(400,152,  0,-1)}
+  ${lp(400,152,  1, 0)}
+  ${lp(400,262,  0,-1)}
+  ${lp(400,262, -1, 0)}
+  <text x="160" y="215" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="22">C</text>
+  <text x="340" y="215" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="22">C</text>
+  <text x="84"  y="152" text-anchor="middle" dominant-baseline="middle" fill="#44ff88" font-family="monospace" font-weight="bold" font-size="22">Cl</text>
+  <text x="122" y="300" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">H</text>
+  <text x="198" y="300" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">H</text>
+  <text x="400" y="152" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="400" y="262" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="452" y="296" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">H</text>
+  <text x="250" y="395" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">3 LP on Cl  ·  2 LP on each O  ·  polar covalent</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// NH4OH — Ammonium Hydroxide
+// Depicted as NH4+ ion associated with OH- ion
+// N: 0 LP (all 4 bonds used, positively charged). O: 2 LP (like water O).
+NH4OH:{
+  label:'NH₄OH', name:'Ammonium Hydroxide',
+  info:{name:'Ammonium Hydroxide',formula:'NH₄OH',molarMass:'35.046 g/mol',state:'Aqueous solution',bondType:'Ionic / Polar covalent',valenceElectrons:'14',
+    facts:['Ammonium hydroxide does not exist as a discrete molecule in solution — it is an equilibrium mixture of NH₃ and H₂O with small amounts of NH₄⁺ and OH⁻ ions.',
+           'Household ammonia (5–10% NH₄OH) is one of the most commonly used cleaning agents, effective at cutting grease due to its high pH and surfactant-like properties.',
+           'Despite its pungent smell, ammonia is one of the most important industrial chemicals ever made — without it, synthetic fertilisers could not exist and roughly half the global population could not be fed.']},
+  mol:{
+    atoms:[
+      {element:'N', x:0,    y:0,    z:0},
+      {element:'H', x:0.952,y:0,    z:0.337},
+      {element:'H', x:-0.476,y:0.825,z:0.337},
+      {element:'H', x:-0.476,y:-0.825,z:0.337},
+      {element:'H', x:0,    y:0,    z:-1.010},
+      {element:'O', x:0,    y:0,    z:2.700},
+      {element:'H', x:0,    y:0,    z:3.670}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1},{from:0,to:4,order:1},
+      {from:5,to:6,order:1},{from:0,to:5,order:0}
+    ],
+    lonePairs:[
+      {atomIndex:5,direction:{x:0,y:0,z:-1}},
+      {atomIndex:5,direction:{x:1,y:0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="195" y1="215" x2="130" y2="160" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="195" y1="215" x2="130" y2="270" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="195" y1="215" x2="195" y2="300" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="195" y1="215" x2="260" y2="215" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="340" y1="215" x2="405" y2="215" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(340,215,  0,-1)}
+  ${lp(340,215, -1, 0)}
+  <text x="195" y="215" text-anchor="middle" dominant-baseline="middle" fill="#4499ff" font-family="monospace" font-weight="bold" font-size="24">N</text>
+  <text x="270" y="215" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">H</text>
+  <text x="113" y="148" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">H</text>
+  <text x="113" y="282" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">H</text>
+  <text x="195" y="318" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">H</text>
+  <text x="210" y="202" text-anchor="middle" dominant-baseline="middle" fill="#4499ff" font-family="monospace" font-size="13">+</text>
+  <text x="340" y="215" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="24">O</text>
+  <text x="422" y="215" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="20">H</text>
+  <text x="323" y="197" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-size="13">−</text>
+  <line x1="288" y1="215" x2="312" y2="215" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <text x="250" y="395" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">0 LP on N (NH₄⁺)  ·  2 LP on O (OH⁻)  ·  dashed = ionic association</text>
+</svg>`
+}
+
+}; // end COMPOUNDS
+
+// ── Three.js globals ──────────────────────────────────────────
+let curTab='3d', renderer, scene, camera, molGroup;
+let drag=false, mx=0, my=0, rotX=0.3, rotY=0.5;
+const COLORS={H:'#ffffff',C:'#aaaaaa',N:'#4499ff',O:'#ff5555',F:'#44ff88',Br:'#cc6622',S:'#ffdd00',P:'#ff8800',Si:'#ffcc66',I:'#993399',Na:'#aa44ff',Cr:'#aacc00',Cl:'#44ff88'};
+const RADII={H:.28,C:.42,N:.4,O:.38,F:.34,Br:.58,S:.54,P:.52,Si:.55,I:.65,Na:.60,Cr:.52,Cl:.50};
+const gc=e=>COLORS[e]||'#00f5ff', gr=e=>(RADII[e]||.45)*0.82;
+
+function buildButtons(){
+  const grid=document.getElementById('compoundGrid');
+  Object.keys(COMPOUNDS).forEach(key=>{
+    const c=COMPOUNDS[key];
+    const btn=document.createElement('button');
+    btn.className='cmpd-btn'; btn.dataset.key=key;
+    btn.innerHTML=`<span class="formula">${c.label}</span><span class="cname">${c.name}</span>`;
+    btn.addEventListener('click',()=>loadCompound(key));
+    grid.appendChild(btn);
+  });
+}
+
+function switchTab(t){
+  curTab=t;
+  document.getElementById('t3d').className='tab'+(t==='3d'?' on':'');
+  document.getElementById('tlw').className='tab'+(t==='lw'?' on':'');
+  const tw=document.getElementById('three-wrap'), sw=document.getElementById('svg-wrap');
+  if(t==='3d'){
+    sw.style.display='none';
+    if(tw._ok){
+      tw.style.display='block';
+      // Defer resize+loop until the browser has painted and element has real dimensions
+      requestAnimationFrame(()=>{ resizeR(); startLoop(); });
+    }
+  } else {
+    tw.style.display='none';
+    if(sw._ok)sw.style.display='flex';
+  }
+}
+
+function initThree(){
+  if(renderer){renderer.dispose();renderer=null;}
+  const canvas=document.getElementById('three-canvas'), wrap=document.getElementById('three-wrap');
+  renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setClearColor(0,0);
+  scene=new THREE.Scene();
+  camera=new THREE.PerspectiveCamera(45,1,0.1,500);
+  camera.position.set(0,0,9);
+  scene.add(new THREE.AmbientLight(0x334455,1.4));
+  const l1=new THREE.PointLight(0x00f5ff,2,50); l1.position.set(6,6,6); scene.add(l1);
+  const l2=new THREE.PointLight(0xff2d78,1,50); l2.position.set(-6,-4,4); scene.add(l2);
+  const l3=new THREE.PointLight(0x39ff14,.8,50); l3.position.set(0,6,-6); scene.add(l3);
+  resizeR();
+  canvas.addEventListener('mousedown',e=>{drag=true;mx=e.clientX;my=e.clientY;});
+  window.addEventListener('mouseup',()=>{drag=false;});
+  window.addEventListener('mousemove',e=>{if(!drag)return;rotY+=(e.clientX-mx)*.009;rotX+=(e.clientY-my)*.009;mx=e.clientX;my=e.clientY;});
+  canvas.addEventListener('wheel',e=>{camera.position.z=Math.max(3,Math.min(22,camera.position.z+e.deltaY*.012));e.preventDefault();},{passive:false});
+  let ltd=null;
+  canvas.addEventListener('touchstart',e=>{if(e.touches.length===1){drag=true;mx=e.touches[0].clientX;my=e.touches[0].clientY;}if(e.touches.length===2)ltd=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);e.preventDefault();},{passive:false});
+  canvas.addEventListener('touchend',()=>{drag=false;ltd=null;});
+  canvas.addEventListener('touchmove',e=>{if(e.touches.length===1&&drag){rotY+=(e.touches[0].clientX-mx)*.012;rotX+=(e.touches[0].clientY-my)*.012;mx=e.touches[0].clientX;my=e.touches[0].clientY;}if(e.touches.length===2&&ltd!==null){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);camera.position.z=Math.max(3,Math.min(22,camera.position.z-(d-ltd)*.02));ltd=d;}e.preventDefault();},{passive:false});
+}
+
+function resizeR(){
+  const w=document.getElementById('three-wrap');
+  if(!renderer||!w||!camera)return;
+  renderer.setSize(w.clientWidth,w.clientHeight,false);
+  camera.aspect=w.clientWidth/w.clientHeight;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize',resizeR);
+
+let loopId=0; // increment to cancel any running loop
+function startLoop(){
+  const myId=++loopId; // this loop owns this id; any older loop will self-cancel
+  (function tick(){
+    if(myId!==loopId)return; // a newer loop started — stop this one
+    if(curTab!=='3d')return;  // tab switched away — stop, but keep loopId so re-entry works
+    requestAnimationFrame(tick);
+    if(molGroup){molGroup.rotation.x=rotX;molGroup.rotation.y=rotY;}
+    renderer.render(scene,camera);
+    syncLabels();
+  })();
+}
+
+function syncLabels(){
+  if(!molGroup)return;
+  const w=document.getElementById('three-wrap'),W=w.clientWidth,H=w.clientHeight;
+  (molGroup._ms||[]).forEach((m,i)=>{
+    const lbl=document.querySelectorAll('.alabel')[i]; if(!lbl)return;
+    const p=new THREE.Vector3(); m.getWorldPosition(p); p.project(camera);
+    lbl.style.opacity=p.z>1?'0':'1';
+    lbl.style.left=((p.x*.5+.5)*W)+'px';
+    lbl.style.top=((-p.y*.5+.5)*H)+'px';
+  });
+}
+
+function buildMol(data){
+  if(molGroup){scene.remove(molGroup);molGroup=null;}
+  document.getElementById('atom-labels').innerHTML='';
+  const grp=new THREE.Group(), atoms=data.atoms;
+  const cx=atoms.reduce((s,a)=>s+a.x,0)/atoms.length;
+  const cy=atoms.reduce((s,a)=>s+a.y,0)/atoms.length;
+  const cz=atoms.reduce((s,a)=>s+a.z,0)/atoms.length;
+  const pos=atoms.map(a=>new THREE.Vector3(a.x-cx,a.y-cy,a.z-cz));
+  let maxD=0; pos.forEach(p=>{maxD=Math.max(maxD,p.length());});
+  const sc=maxD>.01?2.6/maxD:1; pos.forEach(p=>p.multiplyScalar(sc));
+  const ms=[];
+  atoms.forEach((atom,i)=>{
+    const c=gc(atom.element),r=gr(atom.element);
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(r,32,32),new THREE.MeshPhongMaterial({color:new THREE.Color(c),emissive:new THREE.Color(c).multiplyScalar(.18),shininess:100,specular:new THREE.Color(0xffffff).multiplyScalar(.4),transparent:true,opacity:.96}));
+    mesh.position.copy(pos[i]); grp.add(mesh); ms.push(mesh);
+    const glow=new THREE.Mesh(new THREE.SphereGeometry(r*1.22,16,16),new THREE.MeshBasicMaterial({color:new THREE.Color(c),transparent:true,opacity:.07,side:THREE.BackSide}));
+    glow.position.copy(pos[i]); grp.add(glow);
+    const lbl=document.createElement('div'); lbl.className='alabel'; lbl.textContent=atom.element; lbl.style.color=c;
+    document.getElementById('atom-labels').appendChild(lbl);
+  });
+  (data.bonds||[]).forEach(bond=>{
+    const a=pos[bond.from],b=pos[bond.to]; if(!a||!b)return;
+    const dir=new THREE.Vector3().subVectors(b,a),len=dir.length();
+    if(len<0.01)return;
+    const dn=dir.clone().normalize();
+    let perp=new THREE.Vector3().crossVectors(dn,new THREE.Vector3(0,1,0)).normalize();
+    if(perp.length()<.01)perp.set(1,0,0);
+    if(bond.order===0){
+      const segs=7,segLen=len/segs*0.42;
+      for(let i=0;i<segs;i++){
+        const t=(i+0.5)/segs;
+        const segMid=new THREE.Vector3().copy(a).addScaledVector(dir,t);
+        const cyl=new THREE.Mesh(new THREE.CylinderGeometry(.032,.032,segLen,8),
+          new THREE.MeshPhongMaterial({color:0x4a5f72,shininess:20,transparent:true,opacity:0.65}));
+        cyl.position.copy(segMid);
+        cyl.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dn);
+        grp.add(cyl);
+      }
+    } else {
+      const offsets=bond.order===1?[0]:bond.order===2?[-.075,.075]:[-.13,0,.13];
+      const mid=new THREE.Vector3().addVectors(a,b).multiplyScalar(.5);
+      offsets.forEach(off=>{
+        const cyl=new THREE.Mesh(new THREE.CylinderGeometry(.055,.055,len,12),
+          new THREE.MeshPhongMaterial({color:0x7799aa,shininess:50,transparent:true,opacity:.82}));
+        cyl.position.copy(mid); if(off!==0)cyl.position.addScaledVector(perp,off);
+        cyl.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dn); grp.add(cyl);
+      });
+    }
+  });
+  (data.lonePairs||[]).forEach(lp=>{
+    const ap=pos[lp.atomIndex]; if(!ap)return;
+    const d=lp.direction?new THREE.Vector3(lp.direction.x,lp.direction.y,lp.direction.z).normalize():new THREE.Vector3(0,1,0);
+    // Perpendicular vector for spacing the two dots of each pair
+    let p2=new THREE.Vector3(d.z,0,-d.x).normalize(); if(p2.length()<.01)p2.set(1,0,0);
+    // LP distance is proportional to the atom sphere radius so dots never
+    // overlap the atom regardless of molecule scale. 1.8x sr = safe clearance.
+    const el=data.atoms[lp.atomIndex].element;
+    const RADII_={H:.28,C:.42,N:.4,O:.38,F:.34,Br:.58,S:.54,P:.52};
+    const sr=(RADII_[el]||.45)*0.82;
+    const lpDist=sr*1.8;    // midpoint of the pair, clear of atom surface
+    const dotSep=sr*0.45;   // half-gap between the 2 dots, proportional too
+    [-.1,.1].forEach(s=>{
+      const dot=new THREE.Mesh(new THREE.SphereGeometry(.085,12,12),new THREE.MeshBasicMaterial({color:0xff2d78}));
+      dot.position.copy(ap.clone().addScaledVector(d,lpDist).addScaledVector(p2,s));
+      grp.add(dot);
+    });
+  });
+  grp._ms=ms; scene.add(grp); molGroup=grp; rotX=.3; rotY=.5;
+}
+
+function loadCompound(key){
+  const c=COMPOUNDS[key]; if(!c)return;
+  document.querySelectorAll('.cmpd-btn').forEach(b=>b.classList.remove('active'));
+  const ab=document.querySelector(`.cmpd-btn[data-key="${key}"]`); if(ab)ab.classList.add('active');
+  document.getElementById('ph').style.display='none';
+  const tw=document.getElementById('three-wrap'), sw=document.getElementById('svg-wrap');
+  tw.style.display='none'; sw.style.display='none';
+  tw._ok=false; sw._ok=false; initThree(); buildMol(c.mol);
+  tw._ok=true;
+  if(curTab==='3d'){tw.style.display='block';resizeR();startLoop();}
+  sw.innerHTML=c.svg; sw._ok=true;
+  if(curTab==='lw')sw.style.display='flex';
+  const inf=c.info;
+  const rows=[['Name',inf.name],['Formula',inf.formula],['Molar Mass',inf.molarMass],['State @ 25°C',inf.state],['Bond Type',inf.bondType],['Valence e⁻',inf.valenceElectrons]];
+  document.getElementById('props').innerHTML=rows.map(([k,v])=>`<div class="prow"><span class="pk">${k}</span><span class="pv">${v||'—'}</span></div>`).join('');
+  document.getElementById('facts').innerHTML=(inf.facts||[]).map((f,i)=>`<div style="margin-bottom:12px;padding-bottom:12px;${i<inf.facts.length-1?'border-bottom:1px solid rgba(255,255,255,.05)':''}"><span style="color:var(--neon-yellow);font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.1em;">// FACT ${i+1}</span><p class="ftext" style="margin-top:4px;">${f}</p></div>`).join('');
+  document.getElementById('dot').className='status-dot on';
+}
+
+// ── Request form ─────────────────────────────────────────────
+const GF_URL='https://docs.google.com/forms/d/e/1FAIpQLSf9wi_iiu343x3Qa59dTbPzH4AWEtuJA-af5qxyubt40rB6Mw/formResponse';
+const GF_COMPOUND='entry.749959567';
+const GF_NAME='entry.1563661166';
+const GF_REASON='entry.106761875';
+
+document.getElementById('req-reason').addEventListener('input',function(){
+  document.getElementById('charCount').textContent=this.value.length;
+});
+
+async function submitRequest(){
+  const compound=document.getElementById('req-compound').value.trim();
+  const name=document.getElementById('req-name').value.trim();
+  const reason=document.getElementById('req-reason').value.trim();
+  const errEl=document.getElementById('req-error');
+  const sucEl=document.getElementById('req-success');
+  const btn=document.getElementById('reqBtn');
+  errEl.style.display='none'; sucEl.style.display='none';
+
+  if(!compound){ errEl.style.display='block'; document.getElementById('req-compound').focus(); return; }
+
+  btn.disabled=true;
+  btn.querySelector('span').textContent='Sending…';
+
+  const body=new FormData();
+  body.append(GF_COMPOUND, compound);
+  body.append(GF_NAME, name||'Anonymous');
+  body.append(GF_REASON, reason);
+
+  try {
+    // mode:no-cors — CORS error is expected but submission still goes through
+    await fetch(GF_URL,{method:'POST',mode:'no-cors',body});
+  } catch(e){ /* no-cors always throws — submission still succeeds */ }
+
+  sucEl.style.display='block';
+  btn.querySelector('span').textContent='Submit Request';
+
+  setTimeout(()=>{
+    document.getElementById('req-compound').value='';
+    document.getElementById('req-name').value='';
+    document.getElementById('req-reason').value='';
+    document.getElementById('charCount').textContent='0';
+    sucEl.style.display='none';
+    btn.disabled=false;
+  },3000);
+}
+
+buildButtons();
+</script>
+</body>
+</html>
