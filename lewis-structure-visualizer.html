@@ -75,7 +75,7 @@ header{position:relative;z-index:10;padding:20px 28px 16px;display:flex;align-it
 .prow{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .prow:last-child{border-bottom:none}
 .pk{color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:.72rem}
-.pv{color:var(--text);font-weight:600;text-align:right;max-width:58%;font-size:.88rem}
+.pv{color:var(--text);font-weight:600;text-align:right;max-width:58%;font-size:.88rem;word-break:break-word;overflow-wrap:anywhere}
 .ftext{font-size:.88rem;line-height:1.65;color:var(--text)}
 .wait{color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:.72rem;text-align:center;padding:16px 0}
 @media(max-width:900px){.main-layout{grid-template-columns:1fr}.page-shell{flex-direction:column}.sidebar{width:100%;height:200px;border-right:none;border-bottom:1px solid var(--border)}.main-content{padding:12px}header{padding:14px 16px}}
@@ -110,7 +110,7 @@ header{position:relative;z-index:10;padding:20px 28px 16px;display:flex;align-it
     <div class="logo">Lewis<span>·</span>Lab</div>
     <div class="tagline">Molecular Structure Visualizer</div>
   </div>
-  <div style="font-family:'Share Tech Mono',monospace;font-size:.60rem;color:var(--neon-green);letter-spacing:.12em;text-shadow:var(--glow-green);">3D · ELECTRON DOT · v1.3</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:.60rem;color:var(--neon-green);letter-spacing:.12em;text-shadow:var(--glow-green);">3D · ELECTRON DOT · v1.4</div>
 </header>
 
 <div class="page-shell">
@@ -1755,13 +1755,330 @@ CdMnO4_2:{
 </svg>`
 }
 
+,
+
+// ════════════════════════════════════════════════════════════
+// Ewingite Mg8Ca8(UO2)24(CO3)30O4(OH)12(H2O)138
+// Full formula: 650 atoms -- world's most complex mineral.
+// 3D/SVG show a representative structural unit: 1 uranyl (UO2) + 3 CO3 + Mg + Ca + 2 H2O = 23 atoms.
+Ewingite:{
+  label:'Mg₈Ca₈(UO₂)₂₄...', name:'Ewingite',
+  info:{name:'Ewingite',formula:'Mg₈Ca₈(UO₂)₂₄(CO₃)₃₀O₄(OH)₁₂(H₂O)₁₃₈',molarMass:'~11,903 g/mol',state:'Solid (mineral)',bondType:'Ionic / Polar covalent',valenceElectrons:'~2400',
+    facts:['Ewingite holds the world record for the most complex mineral formula ever determined — its formula unit contains 650 atoms across 7 different elements, eclipsing the previous record held by paulingite.',
+           'It is a rare uranium carbonate mineral discovered in 2018 at the Jachýmov mine in the Czech Republic — the same mine that Marie Curie used as her primary source of uranium ore for her Nobel Prize-winning research on radioactivity.',
+           'Ewingite is highly radioactive due to its 24 uranium atoms per formula unit, and its complex sheet structure forms only under extremely specific geochemical conditions at the surface of oxidised uranium ore deposits.',
+           '🧪 Note: the 3D model and Lewis structure show a representative structural unit (1 uranyl UO₂, 3 carbonate CO₃, Mg²⁺, Ca²⁺, and 2 H₂O) from the full 650-atom formula.']},
+  mol:{
+    atoms:[
+      {element:'U', x: 0.000,y: 0.000,z: 0.000},
+      {element:'O', x: 0.000,y: 0.000,z: 1.770},
+      {element:'O', x: 0.000,y: 0.000,z:-1.770},
+      {element:'C', x: 2.450,y: 0.000,z: 0.000},
+      {element:'O', x: 1.160,y: 0.000,z: 0.000},
+      {element:'O', x: 3.095,y: 1.117,z: 0.000},
+      {element:'O', x: 3.095,y:-1.117,z: 0.000},
+      {element:'C', x:-1.225,y: 2.122,z: 0.000},
+      {element:'O', x:-0.580,y: 1.005,z: 0.000},
+      {element:'O', x:-2.515,y: 2.122,z: 0.000},
+      {element:'O', x:-0.580,y: 3.239,z: 0.000},
+      {element:'C', x:-1.225,y:-2.122,z: 0.000},
+      {element:'O', x:-0.580,y:-1.005,z: 0.000},
+      {element:'O', x:-0.580,y:-3.239,z: 0.000},
+      {element:'O', x:-2.515,y:-2.122,z: 0.000},
+      {element:'Mg',x: 3.000,y: 3.000,z: 2.500},
+      {element:'Ca',x:-3.000,y: 3.000,z:-2.500},
+      {element:'O', x: 0.000,y: 4.200,z: 1.800},
+      {element:'O', x: 4.200,y: 0.000,z:-1.800},
+      {element:'H', x: 0.700,y: 4.800,z: 1.800},
+      {element:'H', x:-0.700,y: 4.800,z: 1.800},
+      {element:'H', x: 4.800,y: 0.700,z:-1.800},
+      {element:'H', x: 4.800,y:-0.700,z:-1.800}
+    ],
+    bonds:[
+      {from:0,to:1,order:2},{from:0,to:2,order:2},
+      {from:0,to:4,order:1},{from:0,to:8,order:1},{from:0,to:12,order:1},
+      {from:3,to:4,order:1},{from:3,to:5,order:1},{from:3,to:6,order:1},
+      {from:7,to:8,order:1},{from:7,to:9,order:1},{from:7,to:10,order:1},
+      {from:11,to:12,order:1},{from:11,to:13,order:1},{from:11,to:14,order:1},
+      {from:15,to:5,order:0},{from:15,to:4,order:0},{from:15,to:17,order:0},{from:15,to:18,order:0},
+      {from:16,to:9,order:0},{from:16,to:10,order:0},{from:16,to:8,order:0},
+      {from:17,to:19,order:1},{from:17,to:20,order:1},
+      {from:18,to:21,order:1},{from:18,to:22,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:5, direction:{x: 1,y: 0,z:0}},{atomIndex:5, direction:{x: 0,y: 1,z:0}},
+      {atomIndex:6, direction:{x: 1,y: 0,z:0}},{atomIndex:6, direction:{x: 0,y:-1,z:0}},
+      {atomIndex:9, direction:{x:-1,y: 0,z:0}},{atomIndex:9, direction:{x: 0,y: 1,z:0}},
+      {atomIndex:10,direction:{x: 0,y: 1,z:0}},{atomIndex:10,direction:{x:-1,y: 0,z:0}},
+      {atomIndex:13,direction:{x: 0,y:-1,z:0}},{atomIndex:13,direction:{x:-1,y: 0,z:0}},
+      {atomIndex:14,direction:{x:-1,y: 0,z:0}},{atomIndex:14,direction:{x: 0,y:-1,z:0}},
+      {atomIndex:17,direction:{x: 0,y: 1,z:0}},{atomIndex:17,direction:{x:-1,y: 0,z:0}},
+      {atomIndex:18,direction:{x: 1,y: 0,z:0}},{atomIndex:18,direction:{x: 0,y:-1,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 430" xmlns="http://www.w3.org/2000/svg">
+  <line x1="250" y1="210" x2="350" y2="210" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="210" x2="200" y2="297" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="210" x2="200" y2="123" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="208" x2="250" y2="148" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="254" y1="208" x2="254" y2="148" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="212" x2="250" y2="272" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="254" y1="212" x2="254" y2="272" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="350" y1="210" x2="295" y2="210" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="350" y1="210" x2="378" y2="258" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="350" y1="210" x2="378" y2="162" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="297" x2="228" y2="249" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="297" x2="145" y2="297" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="297" x2="227" y2="345" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="123" x2="228" y2="171" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="123" x2="227" y2="75"  stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="123" x2="145" y2="123" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="410" y1="130" x2="378" y2="155" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="410" y1="130" x2="385" y2="250" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="410" y1="130" x2="262" y2="348" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="410" y1="130" x2="395" y2="298" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="88"  y1="130" x2="145" y2="123" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="88"  y1="130" x2="143" y2="295" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="88"  y1="130" x2="218" y2="245" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="250" y1="355" x2="234" y2="375" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="250" y1="355" x2="266" y2="375" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="393" y1="307" x2="408" y2="322" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="393" y1="307" x2="408" y2="292" stroke="#c8d8e8" stroke-width="2"/>
+  ${lp(295,210,  -1, 0)}  ${lp(295,210,  0,-1)}
+  ${lp(378,258,   1, 0)}  ${lp(378,258,   0, 1)}
+  ${lp(378,162,   1, 0)}  ${lp(378,162,   0,-1)}
+  ${lp(145,297,  -1, 0)}  ${lp(145,297,   0, 1)}
+  ${lp(227,345,   0, 1)}  ${lp(227,345,  -1, 0)}
+  ${lp(227,75,    0,-1)}  ${lp(227,75,    1, 0)}
+  ${lp(145,123,  -1, 0)}  ${lp(145,123,   0,-1)}
+  ${lp(250,355,   0, 1)}  ${lp(250,355,   1, 0)}
+  ${lp(393,307,   1, 0)}  ${lp(393,307,   0,-1)}
+  <text x="250" y="210" text-anchor="middle" dominant-baseline="middle" fill="#33ddbb" font-family="monospace" font-weight="bold" font-size="18">U</text>
+  <text x="250" y="145" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="250" y="275" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="350" y="210" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="16">C</text>
+  <text x="295" y="210" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="378" y="258" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="378" y="162" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="200" y="297" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="16">C</text>
+  <text x="228" y="249" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="145" y="297" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="227" y="345" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="200" y="123" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="16">C</text>
+  <text x="228" y="171" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="227" y="75"  text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="145" y="123" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="410" y="130" text-anchor="middle" dominant-baseline="middle" fill="#00aa44" font-family="monospace" font-weight="bold" font-size="16">Mg</text>
+  <text x="88"  y="130" text-anchor="middle" dominant-baseline="middle" fill="#888888" font-family="monospace" font-weight="bold" font-size="16">Ca</text>
+  <text x="250" y="355" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="393" y="307" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="16">O</text>
+  <text x="227" y="382" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="13">H</text>
+  <text x="273" y="382" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="13">H</text>
+  <text x="415" y="328" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="13">H</text>
+  <text x="415" y="287" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="13">H</text>
+  <text x="394" y="118" text-anchor="middle" fill="#00aa44" font-family="monospace" font-size="11">2+</text>
+  <text x="72"  y="118" text-anchor="middle" fill="#888888" font-family="monospace" font-size="11">2+</text>
+  <text x="250" y="418" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="10">representative unit shown  ·  full formula: 650 atoms  ·  world’s most complex mineral</text>
+</svg>`
+}
+
+,
+
+// ════════════════════════════════════════════════════════════
+// C15H10O5 — Baicalein (5,6,7-trihydroxyflavone)
+// Fused tricyclic: ring A (benzene) + ring C (pyranone) + ring B (phenyl).
+// LPs: O1(ring, 2LP), O_ketone(2LP), 3xOH(2LP each) = 10 LP pairs.
+C15H10O5:{
+  label:'C₁₅H₁₀O₅', name:'Baicalein',
+  info:{name:'Baicalein (5,6,7-trihydroxyflavone)',formula:'C₁₅H₁₀O₅',molarMass:'270.237 g/mol',state:'Solid',bondType:'Polar covalent',valenceElectrons:'110',
+    facts:['Baicalein is a natural flavone originally isolated from the root of Scutellaria baicalensis (Chinese skullcap), a plant used in traditional Chinese medicine for over 2000 years to treat inflammation and fever.',
+           'It is one of the most potent natural inhibitors of lipoxygenase enzymes, which produce inflammatory leukotrienes — this makes it a subject of intensive research for anti-inflammatory, anticancer, and neuroprotective drugs.',
+           'Baicalein’s three adjacent OH groups on ring A (the 5,6,7-trihydroxy pattern) give it exceptionally strong metal-chelating ability, allowing it to bind iron and copper ions and act as a potent antioxidant.']},
+  mol:{
+    atoms:[
+      {element:'C',x:0.00,y:0.00,z:0},{element:'C',x:0.64,y:-1.11,z:0},
+      {element:'C',x:1.40,y:-0.00,z:0},{element:'C',x:0.64,y:1.11,z:0},
+      {element:'C',x:-0.70,y:1.21,z:0},{element:'C',x:-0.70,y:-1.21,z:0},
+      {element:'O',x:1.54,y:1.28,z:0},{element:'C',x:2.50,y:0.70,z:0},
+      {element:'C',x:2.50,y:-0.70,z:0},{element:'C',x:1.88,y:-1.86,z:0},
+      {element:'O',x:1.88,y:-3.08,z:0},{element:'C',x:3.95,y:0.00,z:0},
+      {element:'C',x:4.65,y:1.21,z:0},{element:'C',x:5.99,y:1.21,z:0},
+      {element:'C',x:6.68,y:0.00,z:0},{element:'C',x:5.99,y:-1.21,z:0},
+      {element:'C',x:4.65,y:-1.21,z:0},
+      {element:'O',x:-1.34,y:2.42,z:0},{element:'H',x:-2.30,y:2.42,z:0},
+      {element:'O',x:-1.40,y:0.00,z:0},{element:'H',x:-2.36,y:0.00,z:0},
+      {element:'O',x:-1.34,y:-2.42,z:0},{element:'H',x:-2.30,y:-2.42,z:0},
+      {element:'H',x:2.05,y:1.86,z:0},{element:'H',x:6.54,y:2.13,z:0},
+      {element:'H',x:7.76,y:0.00,z:0},{element:'H',x:6.54,y:-2.13,z:0},
+      {element:'H',x:4.10,y:-2.13,z:0},{element:'H',x:4.10,y:2.13,z:0}
+    ],
+    bonds:[
+      {from:0,to:1,order:2},{from:1,to:2,order:1},{from:2,to:3,order:2},
+      {from:3,to:4,order:1},{from:4,to:5,order:2},{from:5,to:0,order:1},
+      {from:3,to:6,order:1},{from:6,to:7,order:1},{from:7,to:8,order:2},
+      {from:8,to:9,order:1},{from:9,to:10,order:2},{from:10,to:2,order:1},
+      {from:7,to:11,order:1},{from:11,to:12,order:2},{from:12,to:13,order:1},
+      {from:13,to:14,order:2},{from:14,to:15,order:1},{from:15,to:16,order:2},{from:16,to:11,order:1},
+      {from:4,to:17,order:1},{from:17,to:18,order:1},
+      {from:5,to:19,order:1},{from:19,to:20,order:1},
+      {from:0,to:21,order:1},{from:21,to:22,order:1},
+      {from:8,to:23,order:1},{from:12,to:28,order:1},{from:16,to:27,order:1},
+      {from:13,to:24,order:1},{from:14,to:25,order:1},{from:15,to:26,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:6, direction:{x:0,y:1,z:0}},{atomIndex:6, direction:{x:1,y:0,z:0}},
+      {atomIndex:10,direction:{x:0,y:-1,z:0}},{atomIndex:10,direction:{x:-1,y:0,z:0}},
+      {atomIndex:17,direction:{x:-1,y:0,z:0}},{atomIndex:17,direction:{x:0,y:1,z:0}},
+      {atomIndex:19,direction:{x:-1,y:0,z:0}},{atomIndex:19,direction:{x:0,y:1,z:0}},
+      {atomIndex:21,direction:{x:-1,y:0,z:0}},{atomIndex:21,direction:{x:0,y:-1,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="268" y1="255" x2="244" y2="213" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="244" y1="213" x2="196" y2="213" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="196" y1="213" x2="172" y2="255" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="172" y1="255" x2="196" y2="297" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="196" y1="297" x2="244" y2="297" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="244" y1="297" x2="268" y2="255" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="244" y1="215" x2="196" y2="215" stroke="#c8d8e8" stroke-width="1.5"/>
+  <line x1="196" y1="255" x2="172" y2="255" stroke="#c8d8e8" stroke-width="1.5"/>
+  <line x1="196" y1="295" x2="244" y2="295" stroke="#c8d8e8" stroke-width="1.5"/>
+  <line x1="268" y1="255" x2="316" y2="255" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="316" y1="255" x2="340" y2="297" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="340" y1="297" x2="316" y2="339" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="316" y1="339" x2="268" y2="339" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="268" y1="339" x2="244" y2="297" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="318" y1="255" x2="340" y2="295" stroke="#c8d8e8" stroke-width="1.5"/>
+  <line x1="270" y1="339" x2="314" y2="339" stroke="#c8d8e8" stroke-width="1.5"/>
+  <line x1="340" y1="297" x2="364" y2="255" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="364" y1="255" x2="412" y2="256" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="412" y1="256" x2="436" y2="297" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="436" y1="297" x2="412" y2="339" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="412" y1="339" x2="364" y2="338" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="364" y1="338" x2="340" y2="297" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="366" y1="255" x2="410" y2="256" stroke="#c8d8e8" stroke-width="1.5"/>
+  <line x1="436" y1="299" x2="412" y2="337" stroke="#c8d8e8" stroke-width="1.5"/>
+  <line x1="268" y1="339" x2="268" y2="365" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="266" y1="339" x2="266" y2="365" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="172" y1="255" x2="152" y2="255" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="152" y1="255" x2="136" y2="255" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="196" y1="213" x2="176" y2="213" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="176" y1="213" x2="160" y2="213" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="196" y1="297" x2="176" y2="297" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="176" y1="297" x2="160" y2="297" stroke="#c8d8e8" stroke-width="2"/>
+  ${lp(268,365, 0, 1)}  ${lp(268,365,-1, 0)}
+  ${lp(316,255, 0,-1)}  ${lp(316,255, 1, 0)}
+  ${lp(152,255, 0,-1)}  ${lp(152,255, 0, 1)}
+  ${lp(176,213, 0,-1)}  ${lp(176,213, 0, 1)}
+  ${lp(176,297, 0,-1)}  ${lp(176,297, 0, 1)}
+  <text x="268" y="255" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="244" y="213" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="196" y="213" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="172" y="255" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="196" y="297" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="244" y="297" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="316" y="255" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="340" y="297" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="316" y="339" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="268" y="339" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="268" y="368" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="364" y="255" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="412" y="256" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="436" y="297" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="412" y="339" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="364" y="338" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="152" y="255" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="134" y="255" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="12">H</text>
+  <text x="176" y="213" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="158" y="213" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="12">H</text>
+  <text x="176" y="297" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="158" y="297" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="12">H</text>
+  <text x="244" y="213" text-anchor="start" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-size="10" dx="6">H</text>
+  <text x="436" y="283" text-anchor="middle" fill="#c8d8e8" font-family="monospace" font-size="10">H</text>
+  <text x="436" y="313" text-anchor="middle" fill="#c8d8e8" font-family="monospace" font-size="10">H</text>
+  <text x="364" y="322" text-anchor="middle" fill="#c8d8e8" font-family="monospace" font-size="10">H</text>
+  <text x="412" y="350" text-anchor="middle" fill="#c8d8e8" font-family="monospace" font-size="10">H</text>
+  <text x="412" y="244" text-anchor="middle" fill="#c8d8e8" font-family="monospace" font-size="10">H</text>
+  <text x="250" y="410" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="11">ring A (OH×5)  ·  ring C (pyranone)  ·  ring B (phenyl)  ·  5,6,7-trihydroxyflavone</text>
+</svg>`
+},
+
+// ════════════════════════════════════════════════════════════
+// (C5H8O2)n — Poly(methyl methacrylate) / PMMA / Acrylic
+// Repeat unit: -[CH2-C(CH3)(COOCH3)]- shown with chain continuation marks.
+// LP: O(C=O) 2LP, O(ester) 2LP. 0 LP on C or H.
+C5H8O2n:{
+  label:'(C₅H₈O₂)ₙ', name:'Polymethyl Methacrylate',
+  info:{name:'Poly(methyl methacrylate) — PMMA',formula:'(C₅H₈O₂)ₙ',molarMass:'100.116 g/mol (repeat unit)',state:'Solid',bondType:'Polar covalent',valenceElectrons:'44 (per repeat unit)',
+    facts:['PMMA (acrylic glass, sold as Plexiglas® or Perspex®) is one of the most optically clear plastics known — it transmits ~92% of visible light, more than ordinary glass, and is used in lenses, aquarium tanks, and aircraft windows.',
+           'The quaternary carbon (no H) in each repeat unit is what gives PMMA its amorphous, glassy character: the bulky side chains prevent the polymer chains from packing into a regular crystal, resulting in a transparent glass with a Tg of ~105°C.',
+           'PMMA is biocompatible and has been used in medicine since the 1940s — it is the material of bone cement in orthopaedic surgery and was historically used for intraocular lens implants after cataract surgery.']},
+  mol:{
+    atoms:[
+      {element:'C', x:0.00,y:0.00,z:0.00},
+      {element:'C', x:1.54,y:0.00,z:0.00},
+      {element:'C', x:2.18,y:1.26,z:0.00},
+      {element:'C', x:2.18,y:-0.92,z:0.88},
+      {element:'O', x:2.18,y:-2.14,z:0.88},
+      {element:'O', x:3.38,y:-0.40,z:0.88},
+      {element:'C', x:4.48,y:-1.10,z:0.88},
+      {element:'H', x:0.00,y:0.00,z:1.09},
+      {element:'H', x:0.00,y:0.00,z:-1.09},
+      {element:'H', x:2.18,y:2.36,z:0.00},
+      {element:'H', x:1.62,y:1.26,z:-0.89},
+      {element:'H', x:1.62,y:1.26,z:0.89},
+      {element:'H', x:4.48,y:-1.70,z:0.00},
+      {element:'H', x:4.48,y:-1.70,z:1.76},
+      {element:'H', x:5.38,y:-0.50,z:0.88}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:1,to:2,order:1},{from:1,to:3,order:1},
+      {from:3,to:4,order:2},{from:3,to:5,order:1},{from:5,to:6,order:1},
+      {from:0,to:7,order:1},{from:0,to:8,order:1},
+      {from:2,to:9,order:1},{from:2,to:10,order:1},{from:2,to:11,order:1},
+      {from:6,to:12,order:1},{from:6,to:13,order:1},{from:6,to:14,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:4,direction:{x:0,y:-1,z:0}},{atomIndex:4,direction:{x:-1,y:0,z:0}},
+      {atomIndex:5,direction:{x:0,y:1,z:0}},{atomIndex:5,direction:{x:0,y:-1,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="40"  y1="215" x2="100" y2="215" stroke="#c8d8e8" stroke-width="2.5" stroke-dasharray="8,4"/>
+  <line x1="100" y1="215" x2="200" y2="215" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="215" x2="320" y2="215" stroke="#c8d8e8" stroke-width="2.5" stroke-dasharray="8,4"/>
+  <line x1="200" y1="215" x2="200" y2="140" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="215" x2="200" y2="290" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="198" y1="290" x2="198" y2="358" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="202" y1="290" x2="202" y2="358" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="200" y1="290" x2="290" y2="290" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="290" y1="290" x2="385" y2="290" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="100" y1="215" x2="100" y2="262" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="100" y1="215" x2="100" y2="168" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(200,362, 0, 1)}  ${lp(200,362,-1, 0)}
+  ${lp(290,290, 0,-1)}  ${lp(290,290, 0, 1)}
+  <text x="100" y="215" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="18">C</text>
+  <text x="200" y="215" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="18">C</text>
+  <text x="200" y="125" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="16">CH₃</text>
+  <text x="200" y="290" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="18">C</text>
+  <text x="200" y="362" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="18">O</text>
+  <text x="290" y="290" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="18">O</text>
+  <text x="385" y="290" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="16">CH₃</text>
+  <text x="100" y="280" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="14">H</text>
+  <text x="100" y="150" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="14">H</text>
+  <text x="35"  y="207" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="13">n</text>
+  <text x="330" y="207" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="13">n</text>
+  <text x="250" y="400" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">repeat unit shown  ·  dashed = chain continuation  ·  2 LP on each O</text>
+</svg>`
+}
+
 }; // end COMPOUNDS
 
 // ── Three.js globals ──────────────────────────────────────────
 let curTab='3d', renderer, scene, camera, molGroup;
 let drag=false, mx=0, my=0, rotX=0.3, rotY=0.5;
-const COLORS={H:'#ffffff',C:'#aaaaaa',N:'#4499ff',O:'#ff5555',F:'#44ff88',Br:'#cc6622',S:'#ffdd00',P:'#ff8800',Si:'#ffcc66',I:'#993399',Na:'#aa44ff',Cr:'#aacc00',Cl:'#44ff88',K:'#aa44ff',Fe:'#cc6600',Ca:'#888888',Pb:'#669966',Bi:'#cc44aa',Ge:'#99cc77',Cd:'#ff9955',Mn:'#cc44ff'};
-const RADII={H:.28,C:.42,N:.4,O:.38,F:.34,Br:.58,S:.54,P:.52,Si:.55,I:.65,Na:.60,Cr:.52,Cl:.50,K:.65,Fe:.56,Ca:.62,Pb:.68,Bi:.70,Ge:.55,Cd:.60,Mn:.48};
+const COLORS={H:'#ffffff',C:'#aaaaaa',N:'#4499ff',O:'#ff5555',F:'#44ff88',Br:'#cc6622',S:'#ffdd00',P:'#ff8800',Si:'#ffcc66',I:'#993399',Na:'#aa44ff',Cr:'#aacc00',Cl:'#44ff88',K:'#aa44ff',Fe:'#cc6600',Ca:'#888888',Pb:'#669966',Bi:'#cc44aa',Ge:'#99cc77',Cd:'#ff9955',Mn:'#cc44ff',U:'#33ddbb',Mg:'#00aa44'};
+const RADII={H:.28,C:.42,N:.4,O:.38,F:.34,Br:.58,S:.54,P:.52,Si:.55,I:.65,Na:.60,Cr:.52,Cl:.50,K:.65,Fe:.56,Ca:.62,Pb:.68,Bi:.70,Ge:.55,Cd:.60,Mn:.48,U:.80,Mg:.50};
 const gc=e=>COLORS[e]||'#00f5ff', gr=e=>(RADII[e]||.45)*0.82;
 
 function buildButtons(){
