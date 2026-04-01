@@ -24,6 +24,13 @@ header{position:relative;z-index:10;padding:20px 28px 16px;display:flex;align-it
 .sidebar{width:210px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;background:rgba(9,11,15,0.95);backdrop-filter:blur(8px)}
 .sidebar-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
 .sidebar-label{font-family:'Orbitron',monospace;font-size:.55rem;letter-spacing:.2em;color:var(--neon-cyan);text-transform:uppercase;text-shadow:var(--glow-cyan)}
+.sidebar-search{margin:8px 10px 4px;position:relative}
+.sidebar-search input{width:100%;background:rgba(0,245,255,.05);border:1px solid rgba(0,245,255,.2);border-radius:6px;color:var(--neon-cyan);font-family:'Share Tech Mono',monospace;font-size:.72rem;padding:7px 28px 7px 10px;outline:none;transition:border-color .2s,box-shadow .2s;letter-spacing:.04em}
+.sidebar-search input::placeholder{color:var(--muted)}
+.sidebar-search input:focus{border-color:var(--neon-cyan);box-shadow:var(--glow-cyan)}
+.sidebar-search .clear-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;line-height:1;padding:0;display:none}
+.sidebar-search .clear-btn:hover{color:var(--neon-cyan)}
+.no-results{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);text-align:center;padding:16px 8px;display:none}
 .sidebar-list{flex:1;overflow-y:auto;padding:8px 0}
 .sidebar-list::-webkit-scrollbar{width:4px}
 .sidebar-list::-webkit-scrollbar-track{background:transparent}
@@ -110,7 +117,7 @@ header{position:relative;z-index:10;padding:20px 28px 16px;display:flex;align-it
     <div class="logo">Lewis<span>·</span>Lab</div>
     <div class="tagline">Molecular Structure Visualizer</div>
   </div>
-  <div style="font-family:'Share Tech Mono',monospace;font-size:.60rem;color:var(--neon-green);letter-spacing:.12em;text-shadow:var(--glow-green);">3D · ELECTRON DOT · v1.4</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:.60rem;color:var(--neon-green);letter-spacing:.12em;text-shadow:var(--glow-green);">3D · ELECTRON DOT · V1.5</div>
 </header>
 
 <div class="page-shell">
@@ -120,6 +127,11 @@ header{position:relative;z-index:10;padding:20px 28px 16px;display:flex;align-it
     <div class="sidebar-head">
       <div class="sidebar-label">⬡ Compounds</div>
     </div>
+    <div class="sidebar-search">
+      <input type="text" id="sidebarSearch" placeholder="Search a compound…" autocomplete="off"/>
+      <button class="clear-btn" id="searchClear" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="no-results" id="noResults">No compounds found</div>
     <div class="sidebar-list" id="compoundGrid"></div>
   </div>
 
@@ -2072,6 +2084,50 @@ C5H8O2n:{
 </svg>`
 }
 
+,
+
+// ════════════════════════════════════════════════════════════
+// NCl3 — Nitrogen Trichloride
+// Trigonal pyramidal (like NH3). N has 1 LP, each Cl has 3 LP.
+NCl3:{
+  label:'NCl₃', name:'Nitrogen Trichloride',
+  info:{name:'Nitrogen Trichloride',formula:'NCl₃',molarMass:'120.366 g/mol',state:'Liquid',bondType:'Polar covalent',valenceElectrons:'26',
+    facts:['Nitrogen trichloride is an extremely unstable and shock-sensitive explosive liquid — even small amounts can detonate violently from friction, heat, or contact with organic material, making it one of the most hazardous simple inorganic compounds.',
+           'Unlike most nitrogen–halogen bonds, N–Cl bonds in NCl₃ are relatively weak because nitrogen and chlorine have similar electronegativities (3.0 vs 3.2), making the molecule much less stable than NF₃ where the stronger N–F bond is formed.',
+           'NCl₃ forms as an unwanted by-product when chlorine gas is used to disinfect swimming pools that contain nitrogen-containing compounds like urea from sweat — it is responsible for the irritating “chlorine” smell and eye irritation swimmers experience.']},
+  mol:{
+    atoms:[
+      {element:'N', x: 0.000,y: 0.000,z: 0.000},
+      {element:'Cl',x: 1.415,y: 0.000,z:-1.047},
+      {element:'Cl',x:-0.707,y: 1.225,z:-1.047},
+      {element:'Cl',x:-0.707,y:-1.225,z:-1.047}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:0,direction:{x:0,y:0,z:1}},
+      {atomIndex:1,direction:{x:1,y:0,z:0}},{atomIndex:1,direction:{x:0,y:1,z:0}},{atomIndex:1,direction:{x:0,y:-1,z:0}},
+      {atomIndex:2,direction:{x:-1,y:0,z:0}},{atomIndex:2,direction:{x:0,y:1,z:0}},{atomIndex:2,direction:{x:0,y:0,z:-1}},
+      {atomIndex:3,direction:{x:-1,y:0,z:0}},{atomIndex:3,direction:{x:0,y:-1,z:0}},{atomIndex:3,direction:{x:0,y:0,z:-1}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="250" y1="195" x2="170" y2="285" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="195" x2="330" y2="285" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="195" x2="250" y2="310" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(250,195,  0,-1)}
+  ${lp(170,285, -1, 0)}  ${lp(170,285,  0, 1)}  ${lp(170,285,  0,-1)}
+  ${lp(330,285,  1, 0)}  ${lp(330,285,  0, 1)}  ${lp(330,285,  0,-1)}
+  ${lp(250,310, -1, 0)}  ${lp(250,310,  1, 0)}  ${lp(250,310,  0, 1)}
+  <text x="250" y="195" text-anchor="middle" dominant-baseline="middle" fill="#4499ff" font-family="monospace" font-weight="bold" font-size="24">N</text>
+  <text x="170" y="285" text-anchor="middle" dominant-baseline="middle" fill="#44ff88" font-family="monospace" font-weight="bold" font-size="22">Cl</text>
+  <text x="330" y="285" text-anchor="middle" dominant-baseline="middle" fill="#44ff88" font-family="monospace" font-weight="bold" font-size="22">Cl</text>
+  <text x="250" y="310" text-anchor="middle" dominant-baseline="middle" fill="#44ff88" font-family="monospace" font-weight="bold" font-size="22">Cl</text>
+  <text x="250" y="390" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">1 LP on N  ·  3 LP per Cl  ·  trigonal pyramidal  ·  107°</text>
+</svg>`
+}
+
 }; // end COMPOUNDS
 
 // ── Three.js globals ──────────────────────────────────────────
@@ -2303,6 +2359,38 @@ async function submitRequest(){
     sucEl.style.display='none';
     btn.disabled=false;
   },3000);
+}
+
+// ── Sidebar search ───────────────────────────────────────────
+const searchInput=document.getElementById('sidebarSearch');
+const clearBtn=document.getElementById('searchClear');
+const noResults=document.getElementById('noResults');
+
+searchInput.addEventListener('input',function(){
+  const q=this.value.trim().toLowerCase();
+  clearBtn.style.display=q?'block':'none';
+  filterCompounds(q);
+});
+
+function clearSearch(){
+  searchInput.value='';
+  clearBtn.style.display='none';
+  filterCompounds('');
+  searchInput.focus();
+}
+
+function filterCompounds(q){
+  const btns=document.querySelectorAll('#compoundGrid .cmpd-btn');
+  let visible=0;
+  btns.forEach(btn=>{
+    const formula=btn.querySelector('.formula').textContent.toLowerCase();
+    const name=btn.querySelector('.cname').textContent.toLowerCase();
+    const key=(btn.dataset.key||'').toLowerCase();
+    const match=!q||formula.startsWith(q)||name.startsWith(q)||key.startsWith(q);
+    btn.style.display=match?'block':'none';
+    if(match)visible++;
+  });
+  noResults.style.display=visible===0?'block':'none';
 }
 
 buildButtons();
