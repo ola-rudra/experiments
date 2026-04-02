@@ -85,6 +85,11 @@ header{position:relative;z-index:10;padding:20px 28px 16px;display:flex;align-it
 .pv{color:var(--text);font-weight:600;text-align:right;max-width:58%;font-size:.88rem;word-break:break-word;overflow-wrap:anywhere}
 .ftext{font-size:.88rem;line-height:1.65;color:var(--text)}
 .wait{color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:.72rem;text-align:center;padding:16px 0}
+.lucky-btn{display:block;width:100%;margin-top:12px;background:transparent;border:2px solid var(--neon-yellow);border-radius:8px;color:var(--neon-yellow);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.08em;padding:12px 16px;text-align:center;transition:all .25s;position:relative;overflow:hidden;text-shadow:0 0 8px var(--neon-yellow);box-shadow:0 0 8px rgba(255,230,0,0.15)}
+.lucky-btn::before{content:'';position:absolute;inset:0;background:var(--neon-yellow);opacity:0;transition:opacity .25s}
+.lucky-btn:hover{color:#000;text-shadow:none;box-shadow:0 0 16px rgba(255,230,0,0.5)}
+.lucky-btn:hover::before{opacity:1}
+.lucky-btn span{position:relative;z-index:1}
 @media(max-width:900px){.main-layout{grid-template-columns:1fr}.page-shell{flex-direction:column}.sidebar{width:100%;height:200px;border-right:none;border-bottom:1px solid var(--border)}.main-content{padding:12px}header{padding:14px 16px}}
 
 /* ── Request form ── */
@@ -161,6 +166,9 @@ header{position:relative;z-index:10;padding:20px 28px 16px;display:flex;align-it
             <div class="hint">🖱 drag to rotate · scroll to zoom</div>
           </div>
           <div id="svg-wrap"></div>
+        </div>
+        <div style="padding:0 24px 20px">
+          <button class="lucky-btn" onclick="loadRandom()"><span>🎲 Feeling random? Click here for a random compound. 🎲</span></button>
         </div>
       </div>
 
@@ -2128,6 +2136,543 @@ NCl3:{
 </svg>`
 }
 
+,
+
+// ════════════════════════════════════════════════════════════
+// C12H22O11 — Sucrose (Table Sugar)
+// Disaccharide: glucose (pyranose, 6-ring) + fructose (furanose, 5-ring) linked by glycosidic O.
+// 3D skeleton model: 23 heavy atoms (12C + 11O). H atoms omitted for clarity.
+// Each O has 2 LP (in ring or OH context). Ring carbons have 0 LP.
+C12H22O11:{
+  label:'C₁₂H₂₂O₁₁', name:'Sucrose',
+  info:{name:'Sucrose (Table Sugar)',formula:'C₁₂H₂₂O₁₁',molarMass:'342.297 g/mol',state:'Solid',bondType:'Polar covalent',valenceElectrons:'132',
+    facts:['Sucrose is a disaccharide formed by linking glucose and fructose through an α,β-1,2-glycosidic bond — unusually, this bond involves the anomeric carbons of BOTH sugars, making sucrose a non-reducing sugar that cannot open to a free aldehyde or ketone.',
+           'The human body cannot directly absorb sucrose — the enzyme sucrase in the small intestine hydrolyses it into glucose and fructose, a reaction that releases energy and the inverted optical rotation mixture known as “invert sugar” used in confectionery.',
+           'Sucrose crystals are piezoelectric: they generate a small electric charge when squeezed, and triboluminescent — you can see faint blue flashes if you crush sugar crystals in the dark, caused by electrical discharges exciting nitrogen gas molecules in the air.',
+           '🧪 Note: the 3D model shows the heavy-atom skeleton only (12C + 11O = 23 atoms). All 22 hydrogen atoms are omitted to prevent overlap in the viewer.']},
+  mol:{
+    atoms:[
+      {element:'O', x: 0.00,y: 0.00,z: 0.00},
+      {element:'C', x: 1.43,y: 0.00,z:-0.25},
+      {element:'C', x: 2.10,y: 1.25,z: 0.20},
+      {element:'C', x: 3.60,y: 1.10,z:-0.10},
+      {element:'C', x: 4.15,y:-0.20,z: 0.40},
+      {element:'C', x: 3.10,y:-1.35,z:-0.20},
+      {element:'C', x: 3.60,y:-2.65,z: 0.30},
+      {element:'O', x: 1.55,y: 2.40,z:-0.20},
+      {element:'O', x: 4.20,y: 2.25,z: 0.50},
+      {element:'O', x: 5.55,y:-0.30,z: 0.10},
+      {element:'O', x: 4.90,y:-3.00,z:-0.30},
+      {element:'O', x: 1.43,y:-1.30,z: 0.40},
+      {element:'C', x: 0.50,y:-2.60,z: 0.20},
+      {element:'C', x:-0.80,y:-3.50,z: 0.60},
+      {element:'C', x:-2.10,y:-2.60,z: 0.30},
+      {element:'O', x:-2.00,y:-1.20,z: 0.60},
+      {element:'C', x:-0.70,y:-0.60,z: 1.60},
+      {element:'C', x:-2.80,y:-3.50,z: 1.00},
+      {element:'C', x: 0.80,y:-3.90,z:-0.40},
+      {element:'O', x: 2.10,y:-4.30,z:-0.20},
+      {element:'O', x:-0.60,y:-4.80,z: 1.20},
+      {element:'O', x:-0.80,y: 0.60,z: 1.50},
+      {element:'O', x:-4.10,y:-3.00,z: 0.70}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:1,to:2,order:1},{from:2,to:3,order:1},
+      {from:3,to:4,order:1},{from:4,to:5,order:1},{from:5,to:0,order:1},
+      {from:5,to:6,order:1},
+      {from:2,to:7,order:1},{from:3,to:8,order:1},{from:4,to:9,order:1},{from:6,to:10,order:1},
+      {from:1,to:11,order:1},{from:11,to:12,order:1},
+      {from:12,to:13,order:1},{from:13,to:14,order:1},{from:14,to:15,order:1},
+      {from:15,to:16,order:1},{from:16,to:12,order:1},
+      {from:12,to:18,order:1},{from:18,to:19,order:1},
+      {from:13,to:20,order:1},{from:16,to:21,order:1},
+      {from:14,to:17,order:1},{from:17,to:22,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:0, direction:{x:-1,y:0,z:0}},{atomIndex:0, direction:{x:0,y:1,z:0}},
+      {atomIndex:7, direction:{x:0,y:1,z:0}},{atomIndex:7, direction:{x:-1,y:0,z:0}},
+      {atomIndex:8, direction:{x:1,y:0,z:0}},{atomIndex:8, direction:{x:0,y:1,z:0}},
+      {atomIndex:9, direction:{x:1,y:0,z:0}},{atomIndex:9, direction:{x:0,y:-1,z:0}},
+      {atomIndex:10,direction:{x:1,y:0,z:0}},{atomIndex:10,direction:{x:0,y:-1,z:0}},
+      {atomIndex:11,direction:{x:-1,y:0,z:0}},{atomIndex:11,direction:{x:0,y:0,z:1}},
+      {atomIndex:15,direction:{x:-1,y:0,z:0}},{atomIndex:15,direction:{x:0,y:0,z:1}},
+      {atomIndex:19,direction:{x:1,y:0,z:0}},{atomIndex:19,direction:{x:0,y:-1,z:0}},
+      {atomIndex:20,direction:{x:0,y:-1,z:0}},{atomIndex:20,direction:{x:-1,y:0,z:0}},
+      {atomIndex:21,direction:{x:-1,y:0,z:0}},{atomIndex:21,direction:{x:0,y:1,z:0}},
+      {atomIndex:22,direction:{x:-1,y:0,z:0}},{atomIndex:22,direction:{x:0,y:-1,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 520 430" xmlns="http://www.w3.org/2000/svg">
+  <line x1="210" y1="175" x2="270" y2="148" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="270" y1="148" x2="322" y2="178" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="322" y1="178" x2="318" y2="232" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="318" y1="232" x2="258" y2="248" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="258" y1="248" x2="210" y2="215" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="210" y1="215" x2="210" y2="175" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="258" y1="248" x2="255" y2="298" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="270" y1="148" x2="265" y2="108" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="322" y1="178" x2="358" y2="155" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="318" y1="232" x2="368" y2="240" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="255" y1="298" x2="288" y2="325" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="210" y1="215" x2="175" y2="240" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="175" y1="240" x2="128" y2="260" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="128" y1="260" x2="95"  y2="230" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="95"  y1="230" x2="82"  y2="185" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="82"  y1="185" x2="118" y2="168" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="118" y1="168" x2="128" y2="260" stroke="#c8d8e8" stroke-width="1.5"/>
+  <line x1="95"  y1="230" x2="52"  y2="248" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="128" y1="260" x2="140" y2="305" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="140" y1="305" x2="168" y2="328" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="128" y1="260" x2="108" y2="298" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="118" y1="168" x2="112" y2="128" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="52"  y1="248" x2="35"  y2="288" stroke="#c8d8e8" stroke-width="2"/>
+  ${lp(210,175, 0,-1)}  ${lp(210,175,-1, 0)}
+  ${lp(265,108, 0,-1)}  ${lp(265,108,-1, 0)}
+  ${lp(358,155, 1, 0)}  ${lp(358,155, 0,-1)}
+  ${lp(368,240, 1, 0)}  ${lp(368,240, 0, 1)}
+  ${lp(288,325, 1, 0)}  ${lp(288,325, 0, 1)}
+  ${lp(175,240, 0,-1)}  ${lp(175,240, 0, 1)}
+  ${lp(82,185,  0,-1)}  ${lp(82,185, -1, 0)}
+  ${lp(168,328, 1, 0)}  ${lp(168,328, 0, 1)}
+  ${lp(108,298, -1,0)}  ${lp(108,298,  0, 1)}
+  ${lp(112,128, 0,-1)}  ${lp(112,128, 1, 0)}
+  ${lp(35,288,  -1,0)}  ${lp(35,288,   0, 1)}
+  <text x="210" y="175" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="270" y="148" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C1</text>
+  <text x="322" y="178" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C2</text>
+  <text x="318" y="232" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C3</text>
+  <text x="258" y="248" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C4</text>
+  <text x="210" y="215" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C5</text>
+  <text x="255" y="298" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C6</text>
+  <text x="265" y="100" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="13">OH</text>
+  <text x="370" y="147" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="13">OH</text>
+  <text x="380" y="240" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="13">OH</text>
+  <text x="296" y="333" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="13">OH</text>
+  <text x="175" y="240" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="128" y="260" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C2'</text>
+  <text x="95"  y="230" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C3'</text>
+  <text x="82"  y="185" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="118" y="168" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C5'</text>
+  <text x="52"  y="248" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C4'</text>
+  <text x="140" y="305" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C1'</text>
+  <text x="112" y="120" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="13">OH</text>
+  <text x="168" y="336" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="13">OH</text>
+  <text x="100" y="306" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="13">OH</text>
+  <text x="28"  y="296" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="13">OH</text>
+  <text x="260" y="420" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="11">glucose (6-ring, left) + fructose (5-ring, right) · α,β-1,2-glycosidic bond · 2 LP per O</text>
+</svg>`
+}
+
+,
+
+// ════════════════════════════════════════════════════════════
+// C12H22O11 — Sucrose (Table Sugar)
+// Glucose (pyranose, 6-ring) + Fructose (furanose, 5-ring) joined by glycosidic O.
+// 3D: heavy-atom skeleton only (12C + 11O = 23 atoms, H omitted for clarity).
+// 2 LP per ring O, 2 LP per glycosidic O.
+C12H22O11:{
+  label:'C₁₂H₂₂O₁₁', name:'Sucrose',
+  info:{name:'Sucrose (Table Sugar)',formula:'C₁₂H₂₂O₁₁',molarMass:'342.297 g/mol',state:'Solid',bondType:'Polar covalent',valenceElectrons:'136',
+    facts:['Sucrose is a disaccharide formed by a glycosidic bond between glucose (C1) and fructose (C2’) — this 1,2-glycosidic linkage is unique because it joins the anomeric carbons of both sugars, making sucrose a non-reducing sugar.',
+           'When dissolved in water, sucrose rotates plane-polarised light to the right (+66.5°), but after hydrolysis into glucose and fructose (a mixture called invert sugar), the rotation reverses to the left — a process used historically to monitor sugar concentration in industry.',
+           'The human perception of sweetness evolved primarily to detect sucrose as a reliable signal of calorie-dense ripe fruit, and sucrose is still used as the standard reference (sweetness = 1.0) against which all other sweeteners are measured.'],
+    note:'🧪 3D model note: H atoms omitted for clarity. Model shows the 12C + 11O skeleton (23 atoms) only.'},
+  mol:{
+    atoms:[
+      {element:'C',x:-3.000,y: 1.400,z:0},{element:'C',x:-4.212,y: 0.700,z:0},
+      {element:'C',x:-4.212,y:-0.700,z:0},{element:'C',x:-3.000,y:-1.400,z:0},
+      {element:'C',x:-1.788,y:-0.700,z:0},{element:'C',x:-1.788,y: 0.700,z:0},
+      {element:'O',x:-2.394,y: 1.050,z:0.4},
+      {element:'C',x: 3.000,y: 1.200,z:0},{element:'C',x: 1.859,y: 0.371,z:0},
+      {element:'C',x: 2.295,y:-0.971,z:0},{element:'C',x: 3.705,y:-0.971,z:0},
+      {element:'C',x: 4.141,y: 0.371,z:0},
+      {element:'O',x: 3.571,y: 0.786,z:0.5},
+      {element:'O',x:-1.200,y: 1.050,z:0},
+      {element:'O',x:-3.000,y: 2.620,z:0},{element:'O',x:-4.212,y:-1.820,z:0},
+      {element:'O',x:-3.000,y:-2.620,z:0},{element:'O',x:-4.212,y: 1.820,z:0},
+      {element:'O',x: 1.400,y:-1.700,z:0},{element:'O',x: 3.705,y:-2.191,z:0},
+      {element:'O',x: 5.200,y: 0.371,z:0},{element:'O',x: 3.000,y: 2.420,z:0},
+      {element:'O',x: 1.859,y:-0.700,z:-0.9}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:1,to:2,order:1},{from:2,to:3,order:1},
+      {from:3,to:4,order:1},{from:4,to:5,order:1},{from:5,to:0,order:1},
+      {from:0,to:6,order:1},{from:4,to:6,order:1},
+      {from:7,to:8,order:1},{from:8,to:9,order:1},{from:9,to:10,order:1},
+      {from:10,to:11,order:1},{from:11,to:7,order:1},
+      {from:7,to:12,order:1},{from:11,to:12,order:1},
+      {from:5,to:13,order:1},{from:8,to:13,order:1},
+      {from:0,to:14,order:1},{from:2,to:15,order:1},{from:3,to:16,order:1},
+      {from:1,to:17,order:1},{from:9,to:18,order:1},{from:10,to:19,order:1},
+      {from:11,to:20,order:1},{from:7,to:21,order:1},{from:8,to:22,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:6, direction:{x:-1,y:0,z:0}},{atomIndex:6, direction:{x:0,y:1,z:0}},
+      {atomIndex:12,direction:{x: 1,y:0,z:0}},{atomIndex:12,direction:{x:0,y:1,z:0}},
+      {atomIndex:13,direction:{x: 0,y:0,z:1}},{atomIndex:13,direction:{x:0,y:-1,z:0}},
+      {atomIndex:14,direction:{x: 0,y:1,z:0}},{atomIndex:14,direction:{x:-1,y:0,z:0}},
+      {atomIndex:15,direction:{x:-1,y:0,z:0}},{atomIndex:15,direction:{x:0,y:-1,z:0}},
+      {atomIndex:16,direction:{x: 0,y:-1,z:0}},{atomIndex:16,direction:{x:1,y:0,z:0}},
+      {atomIndex:17,direction:{x:-1,y:0,z:0}},{atomIndex:17,direction:{x:0,y:1,z:0}},
+      {atomIndex:18,direction:{x:-1,y:0,z:0}},{atomIndex:18,direction:{x:0,y:-1,z:0}},
+      {atomIndex:19,direction:{x: 0,y:-1,z:0}},{atomIndex:19,direction:{x:1,y:0,z:0}},
+      {atomIndex:20,direction:{x: 1,y:0,z:0}},{atomIndex:20,direction:{x:0,y:1,z:0}},
+      {atomIndex:21,direction:{x: 0,y:1,z:0}},{atomIndex:21,direction:{x:1,y:0,z:0}},
+      {atomIndex:22,direction:{x: 0,y:-1,z:0}},{atomIndex:22,direction:{x:-1,y:0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="155" y1="135" x2="90"  y2="172" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="90"  y1="172" x2="90"  y2="248" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="90"  y1="248" x2="155" y2="285" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="155" y1="285" x2="220" y2="248" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="220" y1="248" x2="220" y2="172" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="220" y1="172" x2="155" y2="135" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="345" y1="148" x2="286" y2="191" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="286" y1="191" x2="309" y2="260" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="309" y1="260" x2="381" y2="260" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="381" y1="260" x2="404" y2="191" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="404" y1="191" x2="345" y2="148" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="220" y1="172" x2="248" y2="165" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="248" y1="165" x2="286" y2="191" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="155" y1="135" x2="155" y2="108" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="90"  y1="172" x2="68"  y2="155" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="90"  y1="248" x2="68"  y2="265" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="155" y1="285" x2="155" y2="308" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="220" y1="248" x2="242" y2="265" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="309" y1="260" x2="297" y2="283" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="381" y1="260" x2="381" y2="283" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="404" y1="191" x2="426" y2="178" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="345" y1="148" x2="345" y2="122" stroke="#c8d8e8" stroke-width="2"/>
+  ${lp(187,138, -1,0)}  ${lp(187,138,  0,-1)}
+  ${lp(384,169,  1,0)}  ${lp(384,169,  0,-1)}
+  ${lp(248,165, -1,0)}  ${lp(248,165,  0,-1)}
+  <text x="155" y="135" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="90"  y="172" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="90"  y="248" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="155" y="285" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="220" y="248" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="220" y="172" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="187" y="138" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="345" y="148" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="286" y="191" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="309" y="260" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="381" y="260" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="404" y="191" text-anchor="middle" dominant-baseline="middle" fill="#aaaaaa" font-family="monospace" font-weight="bold" font-size="14">C</text>
+  <text x="384" y="169" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="248" y="165" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="14">O</text>
+  <text x="155" y="102" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="12">OH</text>
+  <text x="55"  y="152" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="12">OH</text>
+  <text x="55"  y="272" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="12">OH</text>
+  <text x="155" y="318" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="12">OH</text>
+  <text x="248" y="272" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="12">OH</text>
+  <text x="288" y="293" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="12">OH</text>
+  <text x="381" y="295" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="12">OH</text>
+  <text x="435" y="175" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="12">OH</text>
+  <text x="345" y="110" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="12">OH</text>
+  <text x="135" y="118" text-anchor="start" fill="#4a5f72" font-family="monospace" font-size="10">Glc</text>
+  <text x="380" y="130" text-anchor="start" fill="#4a5f72" font-family="monospace" font-size="10">Fru</text>
+  <text x="250" y="400" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="11">glucose (pyranose) + fructose (furanose)  ·  α-1,β-2 glycosidic bond</text>
+</svg>`
+}
+
+,
+
+// ════════════════════════════════════════════════════════════
+// Ca3(PO4)2 — Calcium Phosphate
+// Ionic: 3 Ca²⁺ + 2 PO₄³⁻ (tetrahedral). 3 LP per O, 0 LP on P or Ca.
+Ca3PO42:{
+  label:'Ca₃(PO₄)₂', name:'Calcium Phosphate',
+  info:{name:'Calcium Phosphate',formula:'Ca₃(PO₄)₂',molarMass:'310.177 g/mol',state:'Solid',bondType:'Ionic / Polar covalent',valenceElectrons:'96',
+    facts:['Calcium phosphate is the primary mineral component of bones and teeth — in its hydroxyapatite form, Ca₅(PO₄)₃(OH), it gives bones their compressive strength and teeth their hardness, accounting for about 70% of bone mass.',
+           'It is used as a food additive (E341) as an anti-caking agent in powdered foods, a leavening agent in baking powder, and a calcium supplement — it is less soluble than calcium carbonate but better absorbed when taken with food.',
+           'Calcium phosphate ceramics are widely used in bone graft substitutes and dental implants because they are biocompatible, slowly resorbed by the body, and promote new bone growth by providing a scaffold for osteoblasts.']},
+  mol:{
+    atoms:[
+      {element:'P', x:-2.500,y:0.000,z:0.000},
+      {element:'P', x: 2.500,y:0.000,z:0.000},
+      {element:'O', x:-1.048,y:0.000,z:0.513},
+      {element:'O', x:-3.226,y:1.257,z:0.513},
+      {element:'O', x:-3.226,y:-1.257,z:0.513},
+      {element:'O', x:-2.500,y:0.000,z:-1.540},
+      {element:'O', x: 3.952,y:0.000,z:0.513},
+      {element:'O', x: 1.774,y:1.257,z:0.513},
+      {element:'O', x: 1.774,y:-1.257,z:0.513},
+      {element:'O', x: 2.500,y:0.000,z:-1.540},
+      {element:'Ca',x: 0.000,y:0.000,z:2.800},
+      {element:'Ca',x: 0.000,y:2.800,z:-1.000},
+      {element:'Ca',x: 0.000,y:-2.800,z:-1.000}
+    ],
+    bonds:[
+      {from:0,to:2,order:1},{from:0,to:3,order:1},{from:0,to:4,order:1},{from:0,to:5,order:1},
+      {from:1,to:6,order:1},{from:1,to:7,order:1},{from:1,to:8,order:1},{from:1,to:9,order:1},
+      {from:10,to:2,order:0},{from:10,to:7,order:0},
+      {from:11,to:3,order:0},{from:11,to:5,order:0},
+      {from:12,to:4,order:0},{from:12,to:9,order:0}
+    ],
+    lonePairs:[
+      {atomIndex:2, direction:{x: 1,y: 0,z:0}},{atomIndex:2, direction:{x: 0,y: 1,z:0}},{atomIndex:2, direction:{x: 0,y:-1,z:0}},
+      {atomIndex:3, direction:{x:-1,y: 0,z:0}},{atomIndex:3, direction:{x: 0,y: 1,z:0}},{atomIndex:3, direction:{x: 0,y: 0,z: 1}},
+      {atomIndex:4, direction:{x:-1,y: 0,z:0}},{atomIndex:4, direction:{x: 0,y:-1,z:0}},{atomIndex:4, direction:{x: 0,y: 0,z: 1}},
+      {atomIndex:5, direction:{x: 0,y: 0,z:-1}},{atomIndex:5, direction:{x:-1,y: 0,z:0}},{atomIndex:5, direction:{x: 1,y: 0,z:0}},
+      {atomIndex:6, direction:{x: 1,y: 0,z:0}},{atomIndex:6, direction:{x: 0,y: 1,z:0}},{atomIndex:6, direction:{x: 0,y:-1,z:0}},
+      {atomIndex:7, direction:{x:-1,y: 0,z:0}},{atomIndex:7, direction:{x: 0,y: 1,z:0}},{atomIndex:7, direction:{x: 0,y: 0,z: 1}},
+      {atomIndex:8, direction:{x:-1,y: 0,z:0}},{atomIndex:8, direction:{x: 0,y:-1,z:0}},{atomIndex:8, direction:{x: 0,y: 0,z: 1}},
+      {atomIndex:9, direction:{x: 0,y: 0,z:-1}},{atomIndex:9, direction:{x: 1,y: 0,z:0}},{atomIndex:9, direction:{x:-1,y: 0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="145" y1="215" x2="145" y2="155" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="145" y1="215" x2="92"  y2="248" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="145" y1="215" x2="198" y2="248" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="145" y1="215" x2="145" y2="280" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="335" y1="215" x2="335" y2="155" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="335" y1="215" x2="282" y2="248" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="335" y1="215" x2="388" y2="248" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="335" y1="215" x2="335" y2="280" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="240" y1="100" x2="153" y2="148" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="240" y1="100" x2="327" y2="148" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="105" y1="330" x2="92"  y2="260" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="105" y1="330" x2="145" y2="292" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="395" y1="330" x2="388" y2="260" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  <line x1="395" y1="330" x2="335" y2="292" stroke="#4a5f72" stroke-dasharray="5,4" stroke-width="1.5"/>
+  ${lp(145,148,  0,-1)}  ${lp(145,148, -1, 0)}  ${lp(145,148,  1, 0)}
+  ${lp( 92,248, -1, 0)}  ${lp( 92,248,  0,-1)}  ${lp( 92,248,  0, 1)}
+  ${lp(198,248,  1, 0)}  ${lp(198,248,  0,-1)}  ${lp(198,248,  0, 1)}
+  ${lp(145,280,  0, 1)}  ${lp(145,280, -1, 0)}  ${lp(145,280,  1, 0)}
+  ${lp(335,148,  0,-1)}  ${lp(335,148, -1, 0)}  ${lp(335,148,  1, 0)}
+  ${lp(282,248, -1, 0)}  ${lp(282,248,  0,-1)}  ${lp(282,248,  0, 1)}
+  ${lp(388,248,  1, 0)}  ${lp(388,248,  0,-1)}  ${lp(388,248,  0, 1)}
+  ${lp(335,280,  0, 1)}  ${lp(335,280, -1, 0)}  ${lp(335,280,  1, 0)}
+  <text x="145" y="215" text-anchor="middle" dominant-baseline="middle" fill="#ff8800" font-family="monospace" font-weight="bold" font-size="20">P</text>
+  <text x="335" y="215" text-anchor="middle" dominant-baseline="middle" fill="#ff8800" font-family="monospace" font-weight="bold" font-size="20">P</text>
+  <text x="145" y="148" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="92"  y="248" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="198" y="248" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="145" y="280" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="335" y="148" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="282" y="248" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="388" y="248" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="335" y="280" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="240" y="100" text-anchor="middle" dominant-baseline="middle" fill="#888888" font-family="monospace" font-weight="bold" font-size="18">Ca</text>
+  <text x="105" y="330" text-anchor="middle" dominant-baseline="middle" fill="#888888" font-family="monospace" font-weight="bold" font-size="18">Ca</text>
+  <text x="395" y="330" text-anchor="middle" dominant-baseline="middle" fill="#888888" font-family="monospace" font-weight="bold" font-size="18">Ca</text>
+  <text x="224" y="87"  text-anchor="middle" fill="#888888" font-family="monospace" font-size="12">2+</text>
+  <text x="89"  y="317" text-anchor="middle" fill="#888888" font-family="monospace" font-size="12">2+</text>
+  <text x="411" y="317" text-anchor="middle" fill="#888888" font-family="monospace" font-size="12">2+</text>
+  <text x="129" y="202" text-anchor="middle" fill="#ff8800" font-family="monospace" font-size="12">5-</text>
+  <text x="319" y="202" text-anchor="middle" fill="#ff8800" font-family="monospace" font-size="12">5-</text>
+  <text x="250" y="400" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="11">ionic  ·  2× PO₄³⁻ tetrahedral  ·  3 LP per O  ·  0 LP on P / Ca</text>
+</svg>`
+}
+
+,
+
+// ════════════════════════════════════════════════════════════
+// H2FeO4 — Ferric Acid (Iron Tetroxide Acid)
+// Tetrahedral Fe(VI): 2 Fe=O double bonds + 2 Fe-OH single bonds.
+// 2 LP per O, 0 LP on Fe or H.
+H2FeO4:{
+  label:'H₂FeO₄', name:'Ferric Acid',
+  info:{name:'Ferric Acid (Iron(VI) Acid)',formula:'H₂FeO₄',molarMass:'153.849 g/mol',state:'Unstable (aqueous only)',bondType:'Polar covalent',valenceElectrons:'50',
+    facts:['Ferric acid has never been isolated as a pure compound — iron(VI) is an extraordinarily rare oxidation state and H₂FeO₄ exists only fleetingly in highly alkaline aqueous solution, where the ferrate ion FeO₄²⁻ is more stable than its protonated form.',
+           'The ferrate ion FeO₄²⁻ is a powerful and environmentally friendly oxidising agent being studied as a “green” water treatment chemical — it destroys pathogens and organic pollutants, then reduces to harmless Fe(III) precipitate that can be filtered out.',
+           'Iron in the +6 oxidation state is isoelectronic with the permanganate ion MnO₄⁻ — both have the same number of electrons and the same tetrahedral geometry, which is why ferrate solutions are intensely purple, just like potassium permanganate.']},
+  mol:{
+    atoms:[
+      {element:'Fe',x: 0.000,y: 0.000,z: 0.000},
+      {element:'O', x: 1.537,y: 0.000,z: 0.543},
+      {element:'O', x:-0.768,y: 1.331,z: 0.543},
+      {element:'O', x:-0.768,y:-1.331,z: 0.543},
+      {element:'O', x: 0.000,y: 0.000,z:-1.630},
+      {element:'H', x: 2.452,y: 0.000,z: 0.866},
+      {element:'H', x:-1.225,y: 2.123,z: 0.866}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:0,to:2,order:1},
+      {from:0,to:3,order:2},{from:0,to:4,order:2},
+      {from:1,to:5,order:1},{from:2,to:6,order:1}
+    ],
+    lonePairs:[
+      {atomIndex:1,direction:{x: 1,y: 0,z:0}},{atomIndex:1,direction:{x: 0,y: 1,z:0}},
+      {atomIndex:2,direction:{x:-1,y: 0,z:0}},{atomIndex:2,direction:{x: 0,y: 1,z:0}},
+      {atomIndex:3,direction:{x:-1,y: 0,z:0}},{atomIndex:3,direction:{x: 0,y:-1,z:0}},
+      {atomIndex:4,direction:{x: 0,y: 0,z:-1}},{atomIndex:4,direction:{x: 1,y: 0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="253" y1="213" x2="328" y2="158" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="256" y1="210" x2="331" y2="155" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="247" y1="213" x2="172" y2="158" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="210" x2="175" y2="155" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="215" x2="170" y2="275" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="250" y1="215" x2="330" y2="275" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="170" y1="275" x2="133" y2="305" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="330" y1="275" x2="367" y2="305" stroke="#c8d8e8" stroke-width="2.5"/>
+  ${lp(330,155,  1, 0)}  ${lp(330,155,  0,-1)}
+  ${lp(170,155, -1, 0)}  ${lp(170,155,  0,-1)}
+  ${lp(170,275, -1, 0)}  ${lp(170,275,  0, 1)}
+  ${lp(330,275,  1, 0)}  ${lp(330,275,  0, 1)}
+  <text x="250" y="215" text-anchor="middle" dominant-baseline="middle" fill="#cc6600" font-family="monospace" font-weight="bold" font-size="22">Fe</text>
+  <text x="330" y="155" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="170" y="155" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="170" y="275" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="330" y="275" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="20">O</text>
+  <text x="120" y="315" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="18">H</text>
+  <text x="380" y="315" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-weight="bold" font-size="18">H</text>
+  <text x="312" y="135" text-anchor="middle" fill="#c8d8e8" font-family="monospace" font-size="11">=O</text>
+  <text x="188" y="135" text-anchor="middle" fill="#c8d8e8" font-family="monospace" font-size="11">=O</text>
+  <text x="148" y="292" text-anchor="middle" fill="#c8d8e8" font-family="monospace" font-size="11">-OH</text>
+  <text x="352" y="292" text-anchor="middle" fill="#c8d8e8" font-family="monospace" font-size="11">-OH</text>
+  <text x="250" y="390" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">Fe(VI) tetrahedral  ·  2× Fe=O  ·  2× Fe–OH  ·  2 LP per O</text>
+</svg>`
+}
+
+,
+
+// ════════════════════════════════════════════════════════════
+// FeSO4 — Ferrous Sulfate (Iron(II) Sulfate)
+// Ionic: Fe²⁺ + SO₄²⁻ (tetrahedral). 3 LP per O, 0 LP on S or Fe.
+FeSO4:{
+  label:'FeSO₄', name:'Ferrous Sulfate',
+  info:{name:'Ferrous Sulfate (Iron(II) Sulfate)',formula:'FeSO₄',molarMass:'151.908 g/mol',state:'Solid',bondType:'Ionic / Polar covalent',valenceElectrons:'50',
+    facts:['Ferrous sulfate is one of the most widely used iron supplements in medicine — iron deficiency anaemia affects over 1.2 billion people worldwide, and FeSO₄ tablets are the standard first-line treatment because Fe²⁺ is absorbed much more efficiently than Fe³⁺ in the gut.',
+           'It occurs naturally as the mineral melanterite (FeSO₄·7H₂O) and forms spontaneously in mine drainage when pyrite (iron sulfide) is oxidised by oxygen and water — this produces highly acidic “acid mine drainage” that can devastate aquatic ecosystems.',
+           'Ferrous sulfate turns green when hydrated (as the heptahydrate) but oxidises slowly to yellow-brown ferric sulfate Fe₂(SO₄)₃ on exposure to air — this colour change from green to yellow is a simple test for Fe²⁺ oxidation in the laboratory.']},
+  mol:{
+    atoms:[
+      {element:'S', x: 0.000,y: 0.000,z: 0.000},
+      {element:'Fe',x: 3.500,y: 0.000,z: 0.000},
+      {element:'O', x: 1.405,y: 0.000,z: 0.497},
+      {element:'O', x:-0.702,y: 1.217,z: 0.497},
+      {element:'O', x:-0.702,y:-1.217,z: 0.497},
+      {element:'O', x: 0.000,y: 0.000,z:-1.490}
+    ],
+    bonds:[
+      {from:0,to:2,order:1},{from:0,to:3,order:1},{from:0,to:4,order:1},{from:0,to:5,order:1},
+      {from:1,to:2,order:0},{from:1,to:3,order:0}
+    ],
+    lonePairs:[
+      {atomIndex:2,direction:{x: 1,y: 0,z:0}},{atomIndex:2,direction:{x: 0,y: 1,z:0}},{atomIndex:2,direction:{x: 0,y:-1,z:0}},
+      {atomIndex:3,direction:{x:-1,y: 0,z:0}},{atomIndex:3,direction:{x: 0,y: 1,z:0}},{atomIndex:3,direction:{x: 0,y: 0,z: 1}},
+      {atomIndex:4,direction:{x:-1,y: 0,z:0}},{atomIndex:4,direction:{x: 0,y:-1,z:0}},{atomIndex:4,direction:{x: 0,y: 0,z: 1}},
+      {atomIndex:5,direction:{x: 0,y: 0,z:-1}},{atomIndex:5,direction:{x: 1,y: 0,z:0}},{atomIndex:5,direction:{x:-1,y: 0,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <line x1="185" y1="215" x2="185" y2="155" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="185" y1="215" x2="122" y2="258" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="185" y1="215" x2="248" y2="258" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="185" y1="215" x2="185" y2="278" stroke="#c8d8e8" stroke-width="2.5"/>
+  <line x1="262" y1="255" x2="335" y2="215" stroke="#4a5f72" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <line x1="198" y1="152" x2="335" y2="207" stroke="#4a5f72" stroke-dasharray="6,4" stroke-width="1.5"/>
+  ${lp(185,148,  0,-1)}  ${lp(185,148, -1, 0)}  ${lp(185,148,  1, 0)}
+  ${lp(122,258, -1, 0)}  ${lp(122,258,  0, 1)}  ${lp(122,258,  0,-1)}
+  ${lp(248,258,  1, 0)}  ${lp(248,258,  0, 1)}  ${lp(248,258,  0,-1)}
+  ${lp(185,280,  0, 1)}  ${lp(185,280, -1, 0)}  ${lp(185,280,  1, 0)}
+  <text x="185" y="215" text-anchor="middle" dominant-baseline="middle" fill="#ffdd00" font-family="monospace" font-weight="bold" font-size="22">S</text>
+  <text x="350" y="215" text-anchor="middle" dominant-baseline="middle" fill="#cc6600" font-family="monospace" font-weight="bold" font-size="22">Fe</text>
+  <text x="185" y="148" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="122" y="258" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="248" y="258" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="185" y="280" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-weight="bold" font-size="22">O</text>
+  <text x="334" y="198" text-anchor="middle" fill="#cc6600" font-family="monospace" font-size="12">2+</text>
+  <text x="169" y="202" text-anchor="middle" fill="#ffdd00" font-family="monospace" font-size="12">2-</text>
+  <text x="250" y="390" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="12">ionic  ·  SO₄²⁻ tetrahedral  ·  3 LP per O  ·  0 LP on S or Fe</text>
+</svg>`
+}
+
+,
+
+// ════════════════════════════════════════════════════════════
+// C55H72MgN4O5 — Chlorophyll a
+// 137 atoms total. 3D shows the porphyrin core (Mg + 4N + 4 meso-C + 5O = 14 atoms).
+// SVG shows schematic porphyrin ring with all substituents labelled.
+C55H72MgN4O5:{
+  label:'C₅₅H₇₂MgN₄O₅', name:'Chlorophyll a',
+  info:{name:'Chlorophyll a',formula:'C₅₅H₇₂MgN₄O₅',molarMass:'893.508 g/mol',state:'Solid',bondType:'Polar covalent / Coordination',valenceElectrons:'∼480',
+    facts:['Chlorophyll a is the primary photosynthetic pigment in plants, algae and cyanobacteria, absorbing red (680 nm) and blue (430 nm) light but reflecting green — which is why plants appear green even though red wavelengths carry more energy and are used most efficiently.',
+           'The magnesium atom at the centre of the porphyrin ring is coordinated by four nitrogen atoms in a square-planar arrangement — replacing Mg with iron gives haem, the oxygen-carrying pigment in haemoglobin, showing how closely related photosynthesis and respiration chemistry are.',
+           'A single chlorophyll molecule can channel absorbed photon energy to the reaction centre with near-100% quantum efficiency — a feat that has inspired decades of research into artificial photosynthesis and solar energy conversion.',
+           '🧪 Note: the 3D model shows only the porphyrin core (Mg, 4N, 4 meso-C, 5O = 14 atoms). The full molecule has 137 atoms including a 20-carbon phytol tail.']},
+  mol:{
+    atoms:[
+      {element:'Mg',x: 0.000,y: 0.000,z: 0.000},
+      {element:'N', x: 2.010,y: 0.000,z: 0.000},
+      {element:'N', x: 0.000,y: 2.010,z: 0.000},
+      {element:'N', x:-2.010,y: 0.000,z: 0.000},
+      {element:'N', x: 0.000,y:-2.010,z: 0.000},
+      {element:'C', x: 2.404,y: 2.404,z: 0.000},
+      {element:'C', x:-2.404,y: 2.404,z: 0.000},
+      {element:'C', x:-2.404,y:-2.404,z: 0.000},
+      {element:'C', x: 2.404,y:-2.404,z: 0.000},
+      {element:'O', x:-3.195,y: 1.163,z: 0.800},
+      {element:'O', x:-3.195,y:-1.163,z:-0.800},
+      {element:'O', x:-1.163,y:-3.195,z: 1.000},
+      {element:'O', x: 1.163,y:-3.195,z:-1.000},
+      {element:'O', x:-4.500,y: 3.200,z: 0.800}
+    ],
+    bonds:[
+      {from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1},{from:0,to:4,order:1},
+      {from:1,to:5,order:1},{from:2,to:5,order:1},
+      {from:2,to:6,order:1},{from:3,to:6,order:1},
+      {from:3,to:7,order:1},{from:4,to:7,order:1},
+      {from:4,to:8,order:1},{from:1,to:8,order:1},
+      {from:6,to:9,order:0},{from:7,to:10,order:0},
+      {from:7,to:11,order:0},{from:8,to:12,order:0},
+      {from:6,to:13,order:0}
+    ],
+    lonePairs:[
+      {atomIndex:9, direction:{x:-1,y:0,z:0}},{atomIndex:9, direction:{x:0,y:1,z:0}},
+      {atomIndex:10,direction:{x:-1,y:0,z:0}},{atomIndex:10,direction:{x:0,y:-1,z:0}},
+      {atomIndex:11,direction:{x:0,y:-1,z:0}},{atomIndex:11,direction:{x:-1,y:0,z:0}},
+      {atomIndex:12,direction:{x:0,y:-1,z:0}},{atomIndex:12,direction:{x:1,y:0,z:0}},
+      {atomIndex:13,direction:{x:-1,y:0,z:0}},{atomIndex:13,direction:{x:0,y:1,z:0}}
+    ]
+  },
+  svg:`<svg viewBox="0 0 520 440" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="260,110 330,148 330,222 260,260 190,222 190,148" fill="none" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="260" y1="110" x2="260" y2="148" stroke="#c8d8e8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="330" y1="148" x2="295" y2="148" stroke="#c8d8e8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="330" y1="222" x2="295" y2="222" stroke="#c8d8e8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="260" y1="260" x2="260" y2="222" stroke="#c8d8e8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="190" y1="222" x2="225" y2="222" stroke="#c8d8e8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="190" y1="148" x2="225" y2="148" stroke="#c8d8e8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="260" y1="110" x2="260" y2="75"  stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="330" y1="148" x2="375" y2="120" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="330" y1="222" x2="375" y2="248" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="260" y1="260" x2="230" y2="302" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="260" y1="260" x2="290" y2="302" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="190" y1="222" x2="145" y2="248" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="190" y1="222" x2="145" y2="215" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="190" y1="148" x2="145" y2="120" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="190" y1="148" x2="155" y2="95"  stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="290" y1="302" x2="290" y2="330" stroke="#c8d8e8" stroke-width="2"/>
+  <line x1="288" y1="302" x2="288" y2="330" stroke="#c8d8e8" stroke-width="2"/>
+  <circle cx="260" cy="185" r="48" fill="none" stroke="#00f5ff" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.5"/>
+  <text x="260" y="185" text-anchor="middle" dominant-baseline="middle" fill="#00aa44" font-family="monospace" font-weight="bold" font-size="18">Mg</text>
+  <text x="278" y="158" text-anchor="middle" dominant-baseline="middle" fill="#4499ff" font-family="monospace" font-weight="bold" font-size="13">N</text>
+  <text x="242" y="158" text-anchor="middle" dominant-baseline="middle" fill="#4499ff" font-family="monospace" font-weight="bold" font-size="13">N</text>
+  <text x="278" y="212" text-anchor="middle" dominant-baseline="middle" fill="#4499ff" font-family="monospace" font-weight="bold" font-size="13">N</text>
+  <text x="242" y="212" text-anchor="middle" dominant-baseline="middle" fill="#4499ff" font-family="monospace" font-weight="bold" font-size="13">N</text>
+  <text x="260" y="62"  text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-size="12">CH=CH₂</text>
+  <text x="390" y="112" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-size="12">CH₃</text>
+  <text x="393" y="255" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-size="12">CH₂CH₂COO–Phytyl</text>
+  <text x="230" y="318" text-anchor="middle" dominant-baseline="middle" fill="#ff5555" font-family="monospace" font-size="12">O</text>
+  <text x="300" y="340" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-size="12">OCH₃</text>
+  <text x="128" y="255" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-size="12">CH₂CH₂–</text>
+  <text x="128" y="208" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-size="12">CH₃</text>
+  <text x="128" y="112" text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-size="12">CH₃</text>
+  <text x="148" y="80"  text-anchor="middle" dominant-baseline="middle" fill="#c8d8e8" font-family="monospace" font-size="12">CH₃</text>
+  <text x="260" y="105" text-anchor="middle" fill="#4499ff" font-family="monospace" font-size="10">A</text>
+  <text x="325" y="182" text-anchor="middle" fill="#4499ff" font-family="monospace" font-size="10">B</text>
+  <text x="260" y="258" text-anchor="middle" fill="#4499ff" font-family="monospace" font-size="10">C</text>
+  <text x="195" y="182" text-anchor="middle" fill="#4499ff" font-family="monospace" font-size="10">D</text>
+  <text x="230" y="310" text-anchor="middle" fill="#ff5555" font-family="monospace" font-size="10">=O</text>
+  <text x="260" y="428" text-anchor="middle" fill="#4a5f72" font-family="monospace" font-size="11">porphyrin macrocycle (rings A–D)  ·  Mg²⁺ coordinated by 4N  ·  phytol tail at ring B</text>
+</svg>`
+}
+
 }; // end COMPOUNDS
 
 // ── Three.js globals ──────────────────────────────────────────
@@ -2391,6 +2936,16 @@ function filterCompounds(q){
     if(match)visible++;
   });
   noResults.style.display=visible===0?'block':'none';
+}
+
+function loadRandom(){
+  const keys=Object.keys(COMPOUNDS);
+  const key=keys[Math.floor(Math.random()*keys.length)];
+  loadCompound(key);
+  // Highlight in sidebar
+  document.querySelectorAll('.cmpd-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.querySelector(`.cmpd-btn[data-key="${key}"]`);
+  if(btn){btn.classList.add('active');btn.scrollIntoView({block:'nearest',behavior:'smooth'});}
 }
 
 buildButtons();
